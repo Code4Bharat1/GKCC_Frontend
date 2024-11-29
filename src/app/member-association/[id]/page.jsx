@@ -17,13 +17,13 @@ import Link from "next/link";
 const AssociationDetail = async ({ params }) => {
   const { id } = params;
 
-  // Fetch association data server-side
+  // Fetch association data server-sid
   let association = null;
   let error = null;
 
   try {
     const response = await axios.get(
-      `http://localhost:5001/api/association/getOneAssociation/${id}`
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/association/getOneAssociation/${id}`
     );
     if (
       response.data &&

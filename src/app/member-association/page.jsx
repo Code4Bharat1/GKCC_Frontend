@@ -32,7 +32,7 @@ const MemberAssociation = () => {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "https://api.gkcc.world/api/association/getAll"
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/association/getAll`
         );
         console.log(response);
         
