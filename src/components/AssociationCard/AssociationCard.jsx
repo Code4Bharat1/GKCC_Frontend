@@ -47,16 +47,7 @@ const AssociationCard = ({ association }) => {
           >
             View More
           </Link>
-          {websiteLink && (
-            <a
-              href={websiteLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              Visit Website
-            </a>
-          )}
+          
         </div>
       </div>
     </div>
