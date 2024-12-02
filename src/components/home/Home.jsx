@@ -3,24 +3,171 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
-import React from "react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "../layouts/footer/Footer";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import Card from "../ManagementCard/Card";
+import { SiMainwp } from "react-icons/si";
+
 const Home = () => {
+  const brandsData = [
+    { id: 1, image: "/images/dell.png", name: "Brand 1" },
+    { id: 2, image: "/images/acer.png", name: "Brand 2" },
+    { id: 3, image: "/images/boat.png", name: "Brand 3" },
+    { id: 4, image: "/images/disney.png", name: "Brand 4" },
+    { id: 5, image: "/images/fevicol.png", name: "Brand 5" },
+    { id: 6, image: "/images/kfc.png", name: "Brand 6" },
+    { id: 7, image: "/images/mercedes.png", name: "Brand 7" },
+    { id: 8, image: "/images/polo.png", name: "Brand 8" }
+  ];
+  const mediaData = [
+    { id: 1, image: "/images/bahrain.jpg", alt: "Media 1" },
+    { id: 2, image: "/images/jubail.jpg", alt: "Media 2" },
+    { id: 3, image: "/images/makkah.jpg", alt: "Media 3" },
+    { id: 4, image: "/images/jubail.jpg", alt: "Media 4" },
+    { id: 5, image: "/images/bahrain.jpg", alt: "Media 5" },
+    // Add more media items as needed
+  ];
+  
+  const [shuffledBrands, setShuffledBrands] = useState([
+    ...brandsData,
+    ...brandsData,
+  ]); // Duplicate for seamless scrolling
+
+  const vendors = [
+    {
+      id: 1,
+      name: "Dell",
+      logo: "/images/dell.png",
+      contactNo: "+91 12345 67890",
+      city: "City A",
+      country: "Country A",
+      category: "electronics",
+      rating: 4,
+      discount: 10,
+    },
+    {
+      id: 2,
+      name: "Jaxon",
+      logo: "/images/jaxon.png",
+      contactNo: "+91 98765 43210",
+      city: "City B",
+      country: "Country B",
+      category: "clothing",
+      rating: 3,
+      discount: 15,
+    },
+    {
+      id: 3,
+      name: "Acer",
+      logo: "/images/acer.png",
+      contactNo: "+91 11223 44556",
+      city: "City C",
+      country: "Country C",
+      category: "food_beverage",
+      rating: 5,
+      discount: 5,
+    },
+    // Add more vendors as needed
+  ];
+
+  useEffect(() => {
+    // Shuffle the array periodically
+    const shuffleInterval = setInterval(() => {
+      setShuffledBrands((prev) => {
+        const firstHalf = prev.slice(0, brandsData.length);
+        const shuffled = firstHalf.sort(() => Math.random() - 0.5);
+        return [...shuffled, ...shuffled]; // Duplicate again for seamless effect
+      });
+    }, 20000); // Shuffle every 20 seconds
+    return () => clearInterval(shuffleInterval);
+  }, []);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []); 
+
+  
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden"; 
+    } else {
+      document.body.style.overflow = "auto"; 
+    }
+
+   
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]); 
+
+  
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []); 
+
+ 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="w-screen h-screen">
+      {/* Modal */}
+      {isModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sponsor-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={closeModal} // Close modal when clicking outside the content
+        >
+          <div
+            className="bg-white rounded-lg overflow-hidden shadow-lg max-w-4xl w-full mx-4 relative"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal content
+          >
+            <Image
+              src="/images/bg-img.jpg" // Replace with your sponsor image path
+              alt="Sponsor"
+              className="w-full h-auto"
+              width={800} // Adjust as needed
+              height={600} // Adjust as needed
+            />
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 w-[10%] md:w-[5%] bg-white text-red-500 rounded-full p-3  hover:bg-red-600 hover:text-white transition"
+              aria-label="Close Sponsor Modal"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Home Section */}
-      <div className="w-full h-[90vh] flex items-center justify-center flex-col relative">
+      <div className="w-full mt-20 h-[90vh] flex items-center justify-center flex-col relative">
         <div className="absolute w-full h-full">
           <div className="absolute inset-0 w-full h-full">
             <Image
               src="/images/bg-img.jpg"
               alt="Background"
               className="z-0 w-full h-full"
-              width={1920} // You can set the image's intrinsic width
-              height={1080} // and height here if needed
+              width={1920}
+              height={1080}
             />
           </div>
           <div className="absolute inset-0 w-full h-full bg-black opacity-70 z-0"></div>
@@ -34,7 +181,39 @@ const Home = () => {
           </p>
         </div>
       </div>
-      {/* Vision Section */}
+      
+      
+      {/* slider hai */}
+      <section className="pt-12 overflow-hidden mt-12">
+      <div className="container mx-auto px-4 mb-16">
+        {/* Heading Section */}
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl md:text-5xl font-semibold text-black">
+            Our <span className="text-blue-500">Sponsors</span>
+          </h2>
+        </div>
+        <div className="relative overflow-hidden">
+          <motion.div
+            className="flex gap-8"
+            animate={{ x: ["0%", "-100%"] }}
+            transition={{
+              repeat: Infinity,
+              duration: 20,
+              ease: "linear",
+            }}
+          >
+            {shuffledBrands.map((brand, index) => (
+              <SingleBrand key={`${brand.id}-${index}`} brand={brand} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
+      {/* about  Section */}
+      <h2 className="text-2xl mt-2 md:mt-16 text-center md:text-5xl font-semibold text-black">
+            About <span className="text-blue-500">Global Kokani Committees' Council</span>
+          </h2>
       <div className="w-full h-[80%] p-5 md:p-10 flex flex-col-reverse md:flex-row items-center justify-center gap-5 md:gap-0 mt-24 md:mt-0">
         <div className="w-full md:w-1/2 h-full text-center md:text-left p-5 md:p-0 md:flex md:flex-col md:items-center md:justify-center">
           <div className="w-full">
@@ -57,7 +236,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full mt-816xmd:w-1/2 h-full p-5 flex justify-center items-center">
+        <div className="w-full mt-8 md:w-1/2 h-full p-5 flex justify-center items-center">
           <Image
             src="/images/vision.jpg"
             alt="Our Vision"
@@ -101,6 +280,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+
       {/* Story Section */}
       <div className="w-full h-[70%] p-5 md:p-10 flex flex-col md:flex-row-reverse items-center justify-center gap-5 md:gap-0 mt-36 md:mt-0">
         <div className="w-full md:w-1/2 h-full p-5 flex justify-center items-center">
@@ -137,11 +317,51 @@ const Home = () => {
         </div>
       </div>
 
+      {/* managemnt  */}
+      <section className="w-full py-20 bg-white">
+        <h2 className="text-2xl mt-20 text-center md:text-5xl font-semibold text-black">
+          Global Kokani Committees' Council <span className="text-blue-500">Management</span>
+        </h2>
+        <div className="w-full h-full flex flex-wrap justify-center gap-5 md:gap-10 pt-5 px-5 mt-10">
+          <Card
+            imageSrc="/images/salim.jpg" // Provide actual image paths
+            name="Salim Ansari"
+            title="@salim_ansari"
+            description="Leader in community engagement and welfare initiatives."
+            tooltipTitle="Office Bearers"
+            Icon={SiMainwp}
+          />
+          <Card
+            imageSrc="/images/huda.jpg" // Provide actual image paths
+            name="Huda Begum"
+            title="@huda_begum"
+            description="Expert in organizational management and outreach."
+            tooltipTitle="Office Bearers"
+            Icon={SiMainwp}
+          />
+          <Card
+            imageSrc="/images/faizan.jpg" // Provide actual image paths
+            name="Faizan Khan"
+            title="@faizan_khan"
+            description="Advocate for youth development and empowerment."
+            tooltipTitle="Office Bearers"
+            Icon={SiMainwp}
+          />
+        </div>
+        <div className="w-full flex justify-center md:justify-center mt-16">
+          <Link href="/member-association">
+            <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
+              View More
+            </button>
+          </Link>
+        </div>
+      </section>
+
       {/* Association Section */}
-      <div className="w-full h-auto md:h-[60vh] mt-32 md:mt-0">
+      <div className="w-full h-auto md:h-[60vh] mt-4 md:-mt-4">
         <div className="w-full mt-5 text-center">
-          <h1 className="text-[#1A8FE3] font-bold text-[8vw] sm:text-[6vw] md:text-[3vw] w-full mb-5">
-            Our Association
+          <h1 className="text-black font-bold text-[8vw] sm:text-[6vw] md:text-[3vw] w-full mb-5">
+            Our <span className="text-blue-500">Member Associations</span>
           </h1>
         </div>
         <div className="w-full h-auto md:h-[80%] p-5 md:p-10 mt-5">
@@ -153,19 +373,19 @@ const Home = () => {
               {[
                 {
                   src: "/asociation/jeddah.png",
-                  alt: "Image 2",
-                  name: "JEDAAH",
+                  alt: "Jeddah",
+                  name: "JEDDAH",
                 },
                 {
                   src: "/asociation/makkah.png",
-                  alt: "Image 7",
+                  alt: "Makkah",
                   name: "MAKKAH",
                 },
-                { src: "/images/damam.jpg", alt: "Image 6", name: "DAMMAN" },
-                { src: "/images/khamis.jpg", alt: "Image 9", name: "KHAMIS" },
+                { src: "/images/damam.jpg", alt: "Dammam", name: "DAMMAM" },
+                { src: "/images/khamis.jpg", alt: "Khamis", name: "KHAMIS" },
                 {
                   src: "/asociation/jubail.png",
-                  alt: "Image 10",
+                  alt: "Jubail",
                   name: "JUBAIL",
                 },
               ].map((item, index) => (
@@ -191,27 +411,27 @@ const Home = () => {
               {[
                 {
                   src: "/asociation/qatar.png",
-                  alt: "Image 1",
+                  alt: "Qatar",
                   name: "QATAR",
                 },
                 {
                   src: "/asociation/uae.png",
-                  alt: "Image 3",
+                  alt: "UAE",
                   name: "UAE",
                 },
                 {
                   src: "/asociation/oman.png",
-                  alt: "Image 4",
+                  alt: "Oman",
                   name: "OMAN",
                 },
                 {
                   src: "/asociation/bahrain.png",
-                  alt: "Image 5",
+                  alt: "Bahrain",
                   name: "BAHRAIN",
                 },
                 {
                   src: "/asociation/kuwait.png",
-                  alt: "Image 8",
+                  alt: "Kuwait",
                   name: "KUWAIT",
                 },
               ].map((item, index) => (
@@ -231,12 +451,128 @@ const Home = () => {
                   </div>
                 </div>
               ))}
+              
             </div>
           </div>
         </div>
+        
       </div>
 
-      <div className="mt-[20%]">
+{/* vendors */}
+      <section className="w-full mt-2 md:mt-80 py-20 bg-white">
+      {/* Section Title */}
+      <h2 className="text-2xl text-center md:text-5xl font-semibold text-black">
+        Our <span className="text-blue-500">Vendors</span>
+      </h2>
+
+      {/* Vendors Grid */}
+      <div className="flex-grow md:ml-80 mt-12 px-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 xl:gap-16">
+          {vendors && vendors.length > 0 ? (
+            vendors.map((vendor) => (
+              <div
+                key={vendor.id}
+                className="bg-[#1A8FE3] rounded-3xl p-4 text-white shadow-lg flex flex-col items-center transition-transform transform hover:scale-105"
+              >
+                {/* Vendor Logo */}
+                <Image
+                  src={vendor.logo}
+                  alt={`${vendor.name} Logo`}
+                  width={500}
+                  height={400}
+                  className="w-full h-64 object-cover rounded-3xl mb-2"
+                />
+
+                {/* Vendor Name */}
+                <h2 className="text-2xl font-bold mb-2 text-center">{vendor.name}</h2>
+
+                {/* Vendor Details */}
+                <p className="text-md text-center break-words">
+                  Category: {vendor.category.replace("_", " ")}
+                </p>
+                <p className="text-md text-center">Rating: {vendor.rating} Stars</p>
+                <p className="text-md text-center">Discount: {vendor.discount}%</p>
+                <p className="text-md text-center">City: {vendor.city}</p>
+                <p className="text-md text-center">Country: {vendor.country}</p>
+                <p className="text-md text-center">Contact: {vendor.contactNo}</p>
+
+                {/* View More Button */}
+                <Link href={`/vendors/${vendor.id}`}>
+                  <button className="mt-4 px-4 py-2 bg-white text-gray-500 rounded-lg hover:bg-gray-200 transition">
+                    View More
+                  </button>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-full">
+              No vendors available at the moment.
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* View All Vendors Button */}
+      <div className="w-full flex justify-center mt-16">
+        <Link href="/vendors">
+          <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
+            View More
+          </button>
+        </Link>
+      </div>
+    </section>
+    {/* Media Section */}
+    <section className="w-full sm:-mt-12 py-20 bg-white">
+        {/* Section Title */}
+        <h2 className="text-2xl text-center md:text-5xl font-semibold text-blue-500">
+          Media
+        </h2>
+
+        {/* Media Slider */}
+        <div className="container mx-auto px-4 mt-10">
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            className="w-full"
+          >
+            {/* Slides */}
+            {mediaData.map((media) => (
+              <SwiperSlide key={media.id}>
+                <div className="flex justify-center items-center">
+                  <Image
+                    src={media.image}
+                    alt={media.alt}
+                    className="object-cover rounded-lg"
+                    width={500}
+                    height={300}
+                    loading="lazy"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
+      <div className="w-full flex justify-center mt-2">
+        <Link href="/media">
+          <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
+            View More
+          </button>
+        </Link>
+      </div>
+      
+
+      {/* Footer */}
+      <div className="mt-[5%]">
         <Footer />
       </div>
     </div>
@@ -244,3 +580,22 @@ const Home = () => {
 };
 
 export default Home;
+const SingleBrand = ({ brand }) => {
+  const { image, name } = brand;
+
+  const isPng = image.toLowerCase().endsWith(".png");
+
+  const containerClasses = `relative aspect-square w-44 h-44 lg:w-48 lg:h-48 opacity-100 transition ${
+    isPng ? "bg-white" : "bg-transparent"
+  } flex items-center justify-center rounded-lg`;
+
+  return (
+    <div className={containerClasses}>
+      <Image src={image} alt={`${name} Logo`} fill className="object-contain" />
+    </div>
+  );
+};
+
+
+
+
