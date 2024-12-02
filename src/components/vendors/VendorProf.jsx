@@ -212,36 +212,10 @@ const VendorProf = () => {
 
         {/* Main Content with Responsive Advertisements */}
         <div className="flex flex-col gap-4 mb-16 mt-12">
-          {/* Top Advertisement - Visible on Small Screens Only */}
-          <div className="block lg:hidden w-full">
-            <div className="bg-gray-200 rounded-lg p-4 shadow-md">
-              {/* Replace with your actual advertisement content */}
-              <h2 className="text-xl font-semibold mb-2 text-center">Sponsored Ad</h2>
-              <Image
-                src="/path-to-top-ad-image.jpg" // Replace with your ad image path
-                alt="Top Advertisement"
-                width={600}
-                height={150}
-                className="object-cover rounded-lg w-full h-auto"
-              />
-            </div>
-          </div>
+         
 
           <div className="flex flex-col lg:flex-row justify-center items-start gap-4">
-            {/* Left Advertisement - Visible on Large Screens Only */}
-            <div className="hidden lg:block lg:w-1/6">
-              <div className="bg-gray-200 rounded-lg p-4 shadow-md h-full">
-                {/* Replace with your actual advertisement content */}
-                <h2 className="text-xl font-semibold mb-2 text-center">Sponsored Ad</h2>
-                <Image
-                  src="/path-to-left-ad-image.jpg" // Replace with your ad image path
-                  alt="Left Advertisement"
-                  width={300}
-                  height={250}
-                  className="object-cover rounded-lg"
-                />
-              </div>
-            </div>
+            
 
             {/* Vendor Cards Grid */}
             <div className="flex-grow">
@@ -273,36 +247,10 @@ const VendorProf = () => {
               </div>
             </div>
 
-            {/* Right Advertisement - Visible on Large Screens Only */}
-            <div className="hidden lg:block lg:w-1/6">
-              <div className="bg-gray-200 rounded-lg p-4 shadow-md h-full">
-                {/* Replace with your actual advertisement content */}
-                <h2 className="text-xl font-semibold mb-2 text-center">Sponsored Ad</h2>
-                <Image
-                  src="/path-to-right-ad-image.jpg" // Replace with your ad image path
-                  alt="Right Advertisement"
-                  width={300}
-                  height={250}
-                  className="object-cover rounded-lg"
-                />
-              </div>
-            </div>
+          
           </div>
 
-          {/* Bottom Advertisement - Visible on Small Screens Only */}
-          <div className="block lg:hidden w-full">
-            <div className="bg-gray-200 rounded-lg p-4 shadow-md">
-              {/* Replace with your actual advertisement content */}
-              <h2 className="text-xl font-semibold mb-2 text-center">Sponsored Ad</h2>
-              <Image
-                src="/path-to-bottom-ad-image.jpg" // Replace with your ad image path
-                alt="Bottom Advertisement"
-                width={600}
-                height={150}
-                className="object-cover rounded-lg w-full h-auto"
-              />
-            </div>
-          </div>
+         
         </div>
       </div>
       <Footer />

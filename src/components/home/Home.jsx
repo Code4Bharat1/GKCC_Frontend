@@ -349,7 +349,7 @@ const Home = () => {
           />
         </div>
         <div className="w-full flex justify-center md:justify-center mt-16">
-          <Link href="/member-association">
+          <Link href="/managements/office-bearers">
             <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
               View More
             </button>
