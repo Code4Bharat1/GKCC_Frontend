@@ -15,6 +15,8 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isManagementDropdownOpen, setIsManagementDropdownOpen] =
     useState(false);
+    const [isAboutDropdownOpen, setIsAboutDropdownOpen] =
+    useState(false);
   const [profileRoute, setProfileRoute] = useState("/profile"); // State for profile route
   const router = useRouter(); // Initialize router
 
@@ -22,13 +24,16 @@ const Navbar = () => {
     setIsOpen((prev) => !prev);
     setIsDropdownOpen(false);
     setIsManagementDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
   };
+  
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
     setActiveTab(""); // Ensure the active ball is hidden when opening the dropdown
     if (!isDropdownOpen) {
       setIsManagementDropdownOpen(false);
+      setIsAboutDropdownOpen(false);
     }
   };
 
@@ -40,12 +45,21 @@ const Navbar = () => {
     }
   };
 
+  const toggleAboutDropdown = () => {
+    setIsAboutDropdownOpen((prev) => !prev);
+    setActiveTab(""); // Ensure the active ball is hidden when opening the dropdown
+    if (!isAboutDropdownOpen) {
+      setIsDropdownOpen(false);
+    }
+  };
   const handleTabClick = (tabName) => {
     const tabsWithActiveBall = [
       "Home",
-      "About us",
+      "aboutus",
       "Vendors",
       "Member Association",
+      "News Letter",
+      "Media",
     ];
     if (tabsWithActiveBall.includes(tabName)) {
       setActiveTab(tabName);
@@ -56,6 +70,7 @@ const Navbar = () => {
     }
 
     setIsManagementDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
     setIsDropdownOpen(false);
   };
 
@@ -69,9 +84,11 @@ const Navbar = () => {
     const savedTab = localStorage.getItem("activeTab");
     const tabsWithActiveBall = [
       "Home",
-      "About us",
+      "About-GKCC",
       "Vendors",
       "Member Association",
+      "Newsletter",
+      "Media",
     ];
     if (savedTab && tabsWithActiveBall.includes(savedTab)) {
       setActiveTab(savedTab);
@@ -160,24 +177,61 @@ const Navbar = () => {
               <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
             )}
           </Link>
-
-          <Link
+          
+          {/* <Link
             href="/aboutus"
-            onClick={() => handleTabClick("About us")}
+            onClick={() => handleTabClick("aboutus")}
             className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
           >
             <h3
               className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "About us" ? "text-[#1A8FE3]" : ""
+                activeTab === "aboutus" ? "text-[#1A8FE3]" : ""
               }`}
             >
-              About us
+              About GKCC
             </h3>
-            {activeTab === "About us" && (
+            {activeTab === "aboutus" && (
               <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
             )}
-          </Link>
+          </Link> */}
+          <div className="relative">
+            <div
+              onClick={toggleAboutDropdown}
+              className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+            >
+              <h3 className="font-medium text-base lg:text-[1vw]">
+                  About Gkcc <IoIosArrowDown className="inline ml-1" />
+              </h3>
+            </div>
+            {isAboutDropdownOpen && (
+              <div className="absolute top-[150%] left-0 mt-2 w-64 bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                <Link
+                  href="/aboutus/vission"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("aboutGKCC")}
+                >
+                  vission Mission
+                </Link>
+                <Link
+                  href="/aboutus/vission"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Management")}
+                >
+                 core value
+                </Link>
+                <Link
+                  href="/aboutus/vission"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Management")}
+                >
+                  what we do 
+                </Link>
+                
+              </div>
+            )}
+          </div>
 
+          
           <Link
             href="/vendors"
             onClick={() => handleTabClick("Vendors")}
@@ -208,6 +262,40 @@ const Navbar = () => {
               Member Association
             </h3>
             {activeTab === "Member Association" && (
+              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
+            )}
+          </Link>
+
+          <Link
+            href="/newsletter"
+            onClick={() => handleTabClick("News Letter")}
+            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+          >
+            <h3
+              className={`font-medium text-base lg:text-[1vw] ${
+                activeTab === "News Letter" ? "text-[#1A8FE3]" : ""
+              }`}
+            >
+              News Letter
+            </h3>
+            {activeTab === "News Letter" && (
+              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
+            )}
+          </Link>
+
+          <Link
+            href="/media"
+            onClick={() => handleTabClick("Media")}
+            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+          >
+            <h3
+              className={`font-medium text-base lg:text-[1vw] ${
+                activeTab === "Media" ? "text-[#1A8FE3]" : ""
+              }`}
+            >
+              Media
+            </h3>
+            {activeTab === "Media" && (
               <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
             )}
           </Link>
@@ -342,10 +430,10 @@ const Navbar = () => {
             </Link>
             <Link
               href="/aboutus"
-              onClick={() => handleMobileLinkClick("/aboutus", "About us")}
+              onClick={() => handleMobileLinkClick("/aboutus")}
               className="nav-item"
             >
-              <h3 className="font-medium text-lg">About us</h3>
+              <h3 className="font-medium text-lg">About-GKCC</h3>
             </Link>
             <Link
               href="/vendors"
