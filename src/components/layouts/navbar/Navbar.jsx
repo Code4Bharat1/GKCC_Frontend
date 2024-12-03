@@ -9,24 +9,28 @@ import { IoMenu, IoClose } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
+  // State Management
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isManagementDropdownOpen, setIsManagementDropdownOpen] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
+  const [isSponsorsDropdownOpen, setIsSponsorsDropdownOpen] = useState(false); // New state for Sponsors/Vendors dropdown
   const [activeTab, setActiveTab] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isManagementDropdownOpen, setIsManagementDropdownOpen] =
-    useState(false);
-    const [isAboutDropdownOpen, setIsAboutDropdownOpen] =
-    useState(false);
   const [profileRoute, setProfileRoute] = useState("/profile"); // State for profile route
   const router = useRouter(); // Initialize router
 
+  // Toggle Functions
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
+    // Close all dropdowns when toggling mobile menu
     setIsDropdownOpen(false);
     setIsManagementDropdownOpen(false);
     setIsAboutDropdownOpen(false);
+    setIsMediaDropdownOpen(false);
+    setIsSponsorsDropdownOpen(false); // Close Sponsors/Vendors dropdown
   };
-  
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -34,32 +38,74 @@ const Navbar = () => {
     if (!isDropdownOpen) {
       setIsManagementDropdownOpen(false);
       setIsAboutDropdownOpen(false);
+      setIsMediaDropdownOpen(false);
+      setIsSponsorsDropdownOpen(false); // Close Sponsors/Vendors dropdown if another dropdown is opened
     }
   };
 
   const toggleManagementDropdown = () => {
     setIsManagementDropdownOpen((prev) => !prev);
-    setActiveTab(""); // Ensure the active ball is hidden when opening the dropdown
+    setActiveTab("");
     if (!isManagementDropdownOpen) {
       setIsDropdownOpen(false);
+      setIsAboutDropdownOpen(false);
+      setIsMediaDropdownOpen(false);
+      setIsSponsorsDropdownOpen(false);
     }
   };
 
   const toggleAboutDropdown = () => {
     setIsAboutDropdownOpen((prev) => !prev);
-    setActiveTab(""); // Ensure the active ball is hidden when opening the dropdown
+    setActiveTab("");
     if (!isAboutDropdownOpen) {
       setIsDropdownOpen(false);
+      setIsManagementDropdownOpen(false);
+      setIsMediaDropdownOpen(false);
+      setIsSponsorsDropdownOpen(false);
     }
   };
+
+  const toggleMediaDropdown = () => {
+    setIsMediaDropdownOpen((prev) => !prev);
+    setActiveTab("");
+    if (!isMediaDropdownOpen) {
+      setIsDropdownOpen(false);
+      setIsManagementDropdownOpen(false);
+      setIsAboutDropdownOpen(false);
+      setIsSponsorsDropdownOpen(false);
+    }
+  };
+
+  const toggleSponsorsDropdown = () => {
+    setIsSponsorsDropdownOpen((prev) => !prev);
+    setActiveTab("");
+    if (!isSponsorsDropdownOpen) {
+      setIsDropdownOpen(false);
+      setIsManagementDropdownOpen(false);
+      setIsAboutDropdownOpen(false);
+      setIsMediaDropdownOpen(false);
+    }
+  };
+
+  // Handle Tab Click
   const handleTabClick = (tabName) => {
     const tabsWithActiveBall = [
       "Home",
-      "aboutus",
-      "Vendors",
-      "Member Association",
-      "News Letter",
+      "About GKCC",
+      "Management",
+      "Member Associations",
+      "Sponsors / Vendors",
+      "Our Vendors",
+      "Our Sponsors",
+      "Our Well Wisher",
       "Media",
+      "Newsletter",
+      "Event Video",
+      "Event Photos",
+      "Register",
+      "Login",
+      "Profile",
+      "Logout",
     ];
     if (tabsWithActiveBall.includes(tabName)) {
       setActiveTab(tabName);
@@ -69,26 +115,36 @@ const Navbar = () => {
       localStorage.removeItem("activeTab");
     }
 
+    // Close all dropdowns after clicking a tab
     setIsManagementDropdownOpen(false);
     setIsAboutDropdownOpen(false);
-    setIsDropdownOpen(false);
+    setIsMediaDropdownOpen(false);
+    setIsSponsorsDropdownOpen(false);
   };
 
+  // Handle Mobile Link Click
   const handleMobileLinkClick = (path, tabName) => {
     handleTabClick(tabName);
     router.push(path);
     setIsOpen(false); // Close the mobile menu after navigation
   };
 
+  // Effect to load initial state from localStorage
   useEffect(() => {
     const savedTab = localStorage.getItem("activeTab");
     const tabsWithActiveBall = [
       "Home",
-      "About-GKCC",
-      "Vendors",
-      "Member Association",
-      "Newsletter",
+      "About GKCC",
+      "Management",
+      "Member Associations",
+      "Sponsors / Vendors",
+      "Our Vendors",
+      "Our Sponsors",
+      "Our Well Wisher",
       "Media",
+      "Newsletter",
+      "Event Video",
+      "Event Photos",
     ];
     if (savedTab && tabsWithActiveBall.includes(savedTab)) {
       setActiveTab(savedTab);
@@ -108,6 +164,7 @@ const Navbar = () => {
       setProfileRoute("/profile");
     }
 
+    // Click outside handler to close dropdowns
     const handleClickOutside = (event) => {
       if (
         !event.target.closest(".nav-item") &&
@@ -115,6 +172,9 @@ const Navbar = () => {
       ) {
         setIsDropdownOpen(false);
         setIsManagementDropdownOpen(false);
+        setIsAboutDropdownOpen(false);
+        setIsMediaDropdownOpen(false);
+        setIsSponsorsDropdownOpen(false); // Close Sponsors/Vendors dropdown when clicking outside
       }
     };
 
@@ -125,6 +185,7 @@ const Navbar = () => {
     };
   }, []);
 
+  // Handle Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -161,15 +222,15 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex flex-row gap-8 items-center">
+          {/* 1. Home */}
           <Link
             href="/"
             onClick={() => handleTabClick("Home")}
             className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
           >
             <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "Home" ? "text-[#1A8FE3]" : ""
-              }`}
+              className={`font-medium text-base lg:text-[1vw] ${activeTab === "Home" ? "text-[#1A8FE3]" : ""
+                }`}
             >
               Home
             </h3>
@@ -177,30 +238,15 @@ const Navbar = () => {
               <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
             )}
           </Link>
-          
-          {/* <Link
-            href="/aboutus"
-            onClick={() => handleTabClick("aboutus")}
-            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
-          >
-            <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "aboutus" ? "text-[#1A8FE3]" : ""
-              }`}
-            >
-              About GKCC
-            </h3>
-            {activeTab === "aboutus" && (
-              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
-            )}
-          </Link> */}
+
+          {/* 2. About GKCC Dropdown */}
           <div className="relative">
             <div
               onClick={toggleAboutDropdown}
               className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
             >
               <h3 className="font-medium text-base lg:text-[1vw]">
-                  About Gkcc <IoIosArrowDown className="inline ml-1" />
+                About GKCC <IoIosArrowDown className="inline ml-1" />
               </h3>
             </div>
             {isAboutDropdownOpen && (
@@ -208,99 +254,29 @@ const Navbar = () => {
                 <Link
                   href="/aboutus/vission"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
-                  onClick={() => handleTabClick("aboutGKCC")}
+                  onClick={() => handleTabClick("About GKCC")}
                 >
-                  vission Mission
+                  Vision Mission
                 </Link>
                 <Link
-                  href="/aboutus/vission"
+                  href="/aboutus/core-value"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
-                  onClick={() => handleTabClick("Management")}
+                  onClick={() => handleTabClick("About GKCC")}
                 >
-                 core value
+                  Core Value
                 </Link>
                 <Link
-                  href="/aboutus/vission"
+                  href="/aboutus/what-we-do"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
-                  onClick={() => handleTabClick("Management")}
+                  onClick={() => handleTabClick("About GKCC")}
                 >
-                  what we do 
+                  What We Do
                 </Link>
-                
               </div>
             )}
           </div>
 
-          
-          <Link
-            href="/vendors"
-            onClick={() => handleTabClick("Vendors")}
-            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
-          >
-            <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "Vendors" ? "text-[#1A8FE3]" : ""
-              }`}
-            >
-              Our Vendors
-            </h3>
-            {activeTab === "Vendors" && (
-              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
-            )}
-          </Link>
-
-          <Link
-            href="/member-association"
-            onClick={() => handleTabClick("Member Association")}
-            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
-          >
-            <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "Member Association" ? "text-[#1A8FE3]" : ""
-              }`}
-            >
-              Member Association
-            </h3>
-            {activeTab === "Member Association" && (
-              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
-            )}
-          </Link>
-
-          <Link
-            href="/newsletter"
-            onClick={() => handleTabClick("News Letter")}
-            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
-          >
-            <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "News Letter" ? "text-[#1A8FE3]" : ""
-              }`}
-            >
-              News Letter
-            </h3>
-            {activeTab === "News Letter" && (
-              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
-            )}
-          </Link>
-
-          <Link
-            href="/media"
-            onClick={() => handleTabClick("Media")}
-            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
-          >
-            <h3
-              className={`font-medium text-base lg:text-[1vw] ${
-                activeTab === "Media" ? "text-[#1A8FE3]" : ""
-              }`}
-            >
-              Media
-            </h3>
-            {activeTab === "Media" && (
-              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
-            )}
-          </Link>
-
-          {/* Management Dropdown */}
+          {/* 3. Management Dropdown */}
           <div className="relative">
             <div
               onClick={toggleManagementDropdown}
@@ -324,27 +300,125 @@ const Navbar = () => {
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
-                  Executive Managers
+                  Executive Council
                 </Link>
                 <Link
                   href="/managements/coordination-committees"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
-                  Coordination Committees
+                  Coordination Council
                 </Link>
                 <Link
                   href="/managements/advisors"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
-                  Advisors
+                  Patrons/Advisors
+                </Link>
+                <Link
+                  href="/managements/internal-committee"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Management")}
+                >
+                  Internal Committee/Cells
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Auth Section */}
+          {/* 4. Member Associations */}
+          <Link
+            href="/member-association"
+            onClick={() => handleTabClick("Member Associations")}
+            className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+          >
+            <h3
+              className={`font-medium text-base lg:text-[1vw] ${activeTab === "Member Associations" ? "text-[#1A8FE3]" : ""
+                }`}
+            >
+              Member Associations
+            </h3>
+            {activeTab === "Member Associations" && (
+              <div className="w-2 h-2 lg:w-[.5vw] lg:h-[.5vw] bg-[#1A8FE3] rounded-full absolute top-10 lg:top-8"></div>
+            )}
+          </Link>
+
+          {/* 5. Sponsors / Vendors Dropdown */}
+          <div className="relative">
+            <div
+              onClick={toggleSponsorsDropdown}
+              className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+            >
+              <h3 className="font-medium text-base lg:text-[1vw]">
+                Sponsors / Vendors <IoIosArrowDown className="inline ml-1" />
+              </h3>
+            </div>
+            {isSponsorsDropdownOpen && (
+              <div className="absolute top-[150%] left-0 mt-2 w-64 bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                <Link
+                  href="/vendors"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Our Vendors")}
+                >
+                  Our Vendors
+                </Link>
+                <Link
+                  href="/sponsore"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Our Sponsors")}
+                >
+                  Our Sponsors
+                </Link>
+                <Link
+                  href="/wellwisher"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Our Well Wisher")}
+                >
+                  Our Well Wisher
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* 6. Media Dropdown */}
+          <div className="relative">
+            <div
+              onClick={toggleMediaDropdown}
+              className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
+            >
+              <h3 className="font-medium text-base lg:text-[1vw]">
+                Media <IoIosArrowDown className="inline ml-1" />
+              </h3>
+            </div>
+            {isMediaDropdownOpen && (
+              <div className="absolute top-[150%] left-0 mt-2 w-64 bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                <Link
+                  href="/newsletter"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Newsletter")}
+                >
+                  Newsletter
+                </Link>
+                <Link
+                  href="/eventvi"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Event Video")}
+                >
+                  Event Video
+                </Link>
+                <Link
+                  href="/eventph"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Event Photos")}
+                >
+                  Event Photos
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* 7. Register */}
           <div className="flex gap-2 relative">
             {isLoggedIn ? (
               <>
@@ -380,7 +454,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         href="/membership-form"
-                        className="block px-4 py-2 text-[#1a8fe3] hover:bg-[#1A8FE3] hover:text-white"
+                        className="block px-4 py-2 text-[#1a8fe3] hover:bg-[#1A8FE3] hover:texchangt-white"
                         onClick={() => handleTabClick("Register")}
                       >
                         Individual Membership
@@ -406,6 +480,7 @@ const Navbar = () => {
             )}
           </div>
         </div>
+
         {/* Mobile Menu */}
         {isOpen && (
           <div className="lg:hidden flex flex-col items-start bg-white gap-5 top-0 left-0 px-10 fixed inset-0 z-50 overflow-y-auto">
@@ -421,6 +496,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Links */}
+            {/* 1. Home */}
             <Link
               href="/"
               onClick={() => handleMobileLinkClick("/", "Home")}
@@ -428,34 +504,45 @@ const Navbar = () => {
             >
               <h3 className="font-medium text-lg">Home</h3>
             </Link>
-            <Link
-              href="/aboutus"
-              onClick={() => handleMobileLinkClick("/aboutus")}
-              className="nav-item"
-            >
-              <h3 className="font-medium text-lg">About-GKCC</h3>
-            </Link>
-            <Link
-              href="/vendors"
-              onClick={() => handleMobileLinkClick("/vendors", "Vendors")}
-              className="nav-item"
-            >
-              <h3 className="font-medium text-lg">Our Vendors</h3>
-            </Link>
-            <Link
-              href="/member-association"
-              onClick={() =>
-                handleMobileLinkClick(
-                  "/member-association",
-                  "Member Association"
-                )
-              }
-              className="nav-item"
-            >
-              <h3 className="font-medium text-lg">Member Association</h3>
-            </Link>
 
-            {/* Management Dropdown in Mobile */}
+            {/* 2. About GKCC Dropdown */}
+            <div className="relative w-full">
+              <div
+                onClick={toggleAboutDropdown}
+                className="nav-item flex flex-col relative cursor-pointer"
+              >
+                <h3 className="font-medium text-lg">
+                  About GKCC <IoIosArrowDown className="inline ml-1" />
+                </h3>
+              </div>
+              {isAboutDropdownOpen && (
+                <div className="absolute top-[50%] left-0 mt-2 w-full bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                  <Link
+                    href="/aboutus/vission"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/aboutus/vission", "About GKCC")}
+                  >
+                    Vision Mission
+                  </Link>
+                  <Link
+                    href="/aboutus/core-value"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/aboutus/core-value", "About GKCC")}
+                  >
+                    Core Value
+                  </Link>
+                  <Link
+                    href="/aboutus/what-we-do"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/aboutus/what-we-do", "About GKCC")}
+                  >
+                    What We Do
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Management Dropdown */}
             <div className="relative w-full">
               <div
                 onClick={toggleManagementDropdown}
@@ -471,10 +558,7 @@ const Navbar = () => {
                     href="/managements/office-bearers"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() =>
-                      handleMobileLinkClick(
-                        "/managements/office-bearers",
-                        "Management"
-                      )
+                      handleMobileLinkClick("/managements/office-bearers", "Management")
                     }
                   >
                     Office Bearers
@@ -483,43 +567,126 @@ const Navbar = () => {
                     href="/managements/executive-managers"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() =>
-                      handleMobileLinkClick(
-                        "/managements/executive-managers",
-                        "Management"
-                      )
+                      handleMobileLinkClick("/managements/executive-managers", "Management")
                     }
                   >
-                    Executive Managers
+                    Executive Council
                   </Link>
                   <Link
                     href="/managements/coordination-committees"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() =>
-                      handleMobileLinkClick(
-                        "/managements/coordination-committees",
-                        "Management"
-                      )
+                      handleMobileLinkClick("/managements/coordination-committees", "Management")
                     }
                   >
-                    Coordination Committees
+                    Coordination Council
                   </Link>
                   <Link
                     href="/managements/advisors"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() =>
-                      handleMobileLinkClick(
-                        "/managements/advisors",
-                        "Management"
-                      )
+                      handleMobileLinkClick("/managements/advisors", "Management")
                     }
                   >
-                    Advisors
+                    Patrons/Advisors
+                  </Link>
+                  <Link
+                    href="/managements/internal-committee"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() =>
+                      handleMobileLinkClick("/managements/internal-committee", "Management")
+                    }
+                  >
+                    Internal Committee/Cells
                   </Link>
                 </div>
               )}
             </div>
 
-            {/* Mobile Auth Section */}
+            {/* 4. Member Associations */}
+            <Link
+              href="/member-association"
+              onClick={() => handleMobileLinkClick("/member-association", "Member Associations")}
+              className="nav-item"
+            >
+              <h3 className="font-medium text-lg">Member Associations</h3>
+            </Link>
+
+            {/* 5. Sponsors / Vendors Dropdown */}
+            <div className="relative w-full">
+              <div
+                onClick={toggleSponsorsDropdown}
+                className="nav-item flex flex-col relative cursor-pointer"
+              >
+                <h3 className="font-medium text-lg">
+                  Sponsors / Vendors <IoIosArrowDown className="inline ml-1" />
+                </h3>
+              </div>
+              {isSponsorsDropdownOpen && (
+                <div className="absolute top-[50%] left-0 mt-2 w-full bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                  <Link
+                    href="/vendors"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/vendors", "Our Vendors")}
+                  >
+                    Our Vendors
+                  </Link>
+                  <Link
+                    href="/sponsore"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/sponsore", "Our Sponsors")}
+                  >
+                    Our Sponsors
+                  </Link>
+                  <Link
+                    href="/wellwisher"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/wellwisher", "Our Well Wisher")}
+                  >
+                    Our Well Wisher
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 6. Media Dropdown */}
+            <div className="relative w-full">
+              <div
+                onClick={toggleMediaDropdown}
+                className="nav-item flex flex-col relative cursor-pointer"
+              >
+                <h3 className="font-medium text-lg">
+                  Media <IoIosArrowDown className="inline ml-1" />
+                </h3>
+              </div>
+              {isMediaDropdownOpen && (
+                <div className="absolute top-[50%] left-0 mt-2 w-full bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
+                  <Link
+                    href="/newsletter"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/newsletter", "Newsletter")}
+                  >
+                    Newsletter
+                  </Link>
+                  <Link
+                    href="/eventvi"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/eventvi", "Event Video")}
+                  >
+                    Event Video
+                  </Link>
+                  <Link
+                    href="/eventph"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/eventph", "Event Photos")}
+                  >
+                    Event Photos
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 7. Register and 8. Login */}
             <div className="flex flex-col gap-5 w-full">
               {isLoggedIn ? (
                 <>
