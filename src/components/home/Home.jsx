@@ -1,6 +1,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import axios from "axios";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -12,17 +13,62 @@ import { motion } from "framer-motion";
 import Card from "../ManagementCard/Card";
 import { SiMainwp } from "react-icons/si";
 
+const SingleBrand = ({ sponsor }) => {
+  if (!sponsor) {
+    return null; // Fallback UI if sponsor is undefined
+  }
+
+  const { logo, name } = sponsor;
+
+  // Ensure logo is defined and a string
+  if (!logo || typeof logo !== "string") {
+    return null; // Fallback UI if logo is missing or invalid
+  }
+
+  const isPng = logo.toLowerCase().endsWith(".png");
+
+  const containerClasses = `relative aspect-square w-44 h-44 lg:w-48 lg:h-48 opacity-100 transition ${
+    isPng ? "bg-white" : "bg-transparent"
+  } flex items-center justify-center rounded-lg`;
+
+  return (
+    <div className={containerClasses}>
+      <Image src={logo} alt={`${name} Logo`} fill className="object-contain" />
+    </div>
+  );
+};
+
 const Home = () => {
-  const brandsData = [
-    { id: 1, image: "/images/dell.png", name: "Brand 1" },
-    { id: 2, image: "/images/acer.png", name: "Brand 2" },
-    { id: 3, image: "/images/boat.png", name: "Brand 3" },
-    { id: 4, image: "/images/disney.png", name: "Brand 4" },
-    { id: 5, image: "/images/fevicol.png", name: "Brand 5" },
-    { id: 6, image: "/images/kfc.png", name: "Brand 6" },
-    { id: 7, image: "/images/mercedes.png", name: "Brand 7" },
-    { id: 8, image: "/images/polo.png", name: "Brand 8" }
-  ];
+  const [sponsors, setSponsors] = useState([]);
+  const [shuffledSponsors, setShuffledSponsors] = useState([]);
+  const [loadingSponsors, setLoadingSponsors] = useState(true);
+  const [errorSponsors, setErrorSponsors] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
+        console.log("Fetched sponsors:", response.data); // Debugging
+
+        const sponsorArray = response.data.message || [];
+        if (Array.isArray(sponsorArray)) {
+          setSponsors(sponsorArray);
+          setShuffledSponsors([...sponsorArray, ...sponsorArray]); // Duplicate for seamless scrolling
+        } else {
+          setErrorSponsors("Invalid data format received");
+        }
+        setLoadingSponsors(false);
+      } catch (err) {
+        console.error(err);
+        setErrorSponsors("Failed to load sponsors");
+        setLoadingSponsors(false);
+      }
+    };
+
+    fetchSponsors();
+  }, []);
+  
   const mediaData = [
     { id: 1, image: "/images/bahrain.jpg", alt: "Media 1" },
     { id: 2, image: "/images/jubail.jpg", alt: "Media 2" },
@@ -33,8 +79,7 @@ const Home = () => {
   ];
   
   const [shuffledBrands, setShuffledBrands] = useState([
-    ...brandsData,
-    ...brandsData,
+
   ]); // Duplicate for seamless scrolling
 
   const vendors = [
@@ -74,24 +119,46 @@ const Home = () => {
     // Add more vendors as needed
   ];
 
-  useEffect(() => {
-    // Shuffle the array periodically
-    const shuffleInterval = setInterval(() => {
-      setShuffledBrands((prev) => {
-        const firstHalf = prev.slice(0, brandsData.length);
-        const shuffled = firstHalf.sort(() => Math.random() - 0.5);
-        return [...shuffled, ...shuffled]; // Duplicate again for seamless effect
-      });
-    }, 20000); // Shuffle every 20 seconds
-    return () => clearInterval(shuffleInterval);
-  }, []);
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
+ // Fetch sponsors from the backend API
+ useEffect(() => {
+  const fetchSponsors = async () => {
+    try {
+      const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
+      console.log("Fetched sponsors:", response.data); // Debugging
 
-  
-  useEffect(() => {
-    setIsModalOpen(true);
-  }, []); 
+      const sponsorArray = response.data.message || [];
+      if (Array.isArray(sponsorArray)) {
+        setSponsors(sponsorArray);
+        setShuffledSponsors([...sponsorArray, ...sponsorArray]); // Duplicate for seamless scrolling
+      } else {
+        setErrorSponsors("Invalid data format received");
+      }
+      setLoadingSponsors(false);
+    } catch (err) {
+      console.error(err);
+      setErrorSponsors("Failed to load sponsors");
+      setLoadingSponsors(false);
+    }
+  };
+
+  fetchSponsors();
+}, []);
+
+// Shuffle sponsors periodically for dynamic effect
+useEffect(() => {
+  if (sponsors.length === 0) return; // Exit if no sponsors
+
+  const shuffleInterval = setInterval(() => {
+    setShuffledSponsors((prev) => {
+      const half = Math.floor(prev.length / 2);
+      const firstHalf = prev.slice(0, half);
+      const shuffled = [...firstHalf].sort(() => Math.random() - 0.5);
+      return [...shuffled, ...shuffled];
+    });
+  }, 20000); // Shuffle every 20 seconds
+
+  return () => clearInterval(shuffleInterval);
+}, [sponsors]);
 
   
   useEffect(() => {
@@ -185,30 +252,39 @@ const Home = () => {
       
       {/* slider hai */}
       <section className="pt-12 overflow-hidden mt-12">
-      <div className="container mx-auto px-4 mb-16">
-        {/* Heading Section */}
-        <div className="mb-6 text-center">
-          <h2 className="text-2xl md:text-5xl font-semibold text-black">
-            Our <span className="text-blue-500">Sponsors</span>
-          </h2>
+        <div className="container mx-auto px-4 mb-16">
+          {/* Heading Section */}
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl md:text-5xl font-semibold text-black">
+              Our <span className="text-blue-500">Sponsors</span>
+            </h2>
+          </div>
+
+          {/* Handling Loading and Error States */}
+          {loadingSponsors ? (
+            <div className="text-center text-blue-500 py-8">Loading sponsors...</div>
+          ) : errorSponsors ? (
+            <div className="text-center text-red-500 py-8">{errorSponsors}</div>
+          ) : (
+            <div className="relative overflow-hidden">
+              {/* Moving Sponsors Section */}
+              <motion.div
+                className="flex gap-8"
+                animate={{ x: ["0%", "-100%"] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 20,
+                  ease: "linear",
+                }}
+              >
+                {shuffledSponsors.map((sponsor, index) => (
+                  <SingleBrand key={`${sponsor._id || sponsor.id}-${index}`} sponsor={sponsor} />
+                ))}
+              </motion.div>
+            </div>
+          )}
         </div>
-        <div className="relative overflow-hidden">
-          <motion.div
-            className="flex gap-8"
-            animate={{ x: ["0%", "-100%"] }}
-            transition={{
-              repeat: Infinity,
-              duration: 20,
-              ease: "linear",
-            }}
-          >
-            {shuffledBrands.map((brand, index) => (
-              <SingleBrand key={`${brand.id}-${index}`} brand={brand} />
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
+      </section>
 
       {/* about  Section */}
       <h2 className="text-2xl mt-2 md:mt-16 text-center md:text-5xl font-semibold text-black">
@@ -580,21 +656,7 @@ const Home = () => {
 };
 
 export default Home;
-const SingleBrand = ({ brand }) => {
-  const { image, name } = brand;
 
-  const isPng = image.toLowerCase().endsWith(".png");
-
-  const containerClasses = `relative aspect-square w-44 h-44 lg:w-48 lg:h-48 opacity-100 transition ${
-    isPng ? "bg-white" : "bg-transparent"
-  } flex items-center justify-center rounded-lg`;
-
-  return (
-    <div className={containerClasses}>
-      <Image src={image} alt={`${name} Logo`} fill className="object-contain" />
-    </div>
-  );
-};
 
 
 

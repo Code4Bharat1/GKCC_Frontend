@@ -364,7 +364,7 @@ const Navbar = () => {
                   Our Vendors
                 </Link>
                 <Link
-                  href="/sponsore"
+                  href="/our-sponsors"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Our Sponsors")}
                 >
@@ -632,7 +632,7 @@ const Navbar = () => {
                     Our Vendors
                   </Link>
                   <Link
-                    href="/sponsore"
+                    href="/our-sponsors"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/sponsore", "Our Sponsors")}
                   >
