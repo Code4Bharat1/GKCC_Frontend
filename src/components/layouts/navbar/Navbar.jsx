@@ -401,14 +401,14 @@ const Navbar = () => {
                   Newsletter
                 </Link>
                 <Link
-                  href="/eventvi"
+                  href="/event-videos"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Event Video")}
                 >
                   Event Video
                 </Link>
                 <Link
-                  href="/eventph"
+                  href="/event-photos"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Event Photos")}
                 >
@@ -669,14 +669,14 @@ const Navbar = () => {
                     Newsletter
                   </Link>
                   <Link
-                    href="/eventvi"
+                    href="/event-videos"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/eventvi", "Event Video")}
                   >
                     Event Video
                   </Link>
                   <Link
-                    href="/eventph"
+                    href="/event-photos"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/eventph", "Event Photos")}
                   >
