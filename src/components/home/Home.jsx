@@ -160,7 +160,11 @@ useEffect(() => {
   return () => clearInterval(shuffleInterval);
 }, [sponsors]);
 
-  
+useEffect(() => {
+  setIsModalOpen(true);
+}, []);
+
+
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden"; 
