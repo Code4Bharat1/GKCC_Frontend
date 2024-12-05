@@ -212,7 +212,7 @@ const Home = () => {
 
       {/* about  Section */}
       <h2 className="text-2xl mt-2 md:mt-16 text-center md:text-5xl font-semibold text-black">
-            About <span className="text-blue-500">Global Kokani Committees' Council</span>
+            About <span className="text-blue-500">Global Kokani Committees&apos; Council</span>
           </h2>
       <div className="w-full h-[80%] p-5 md:p-10 flex flex-col-reverse md:flex-row items-center justify-center gap-5 md:gap-0 mt-24 md:mt-0">
         <div className="w-full md:w-1/2 h-full text-center md:text-left p-5 md:p-0 md:flex md:flex-col md:items-center md:justify-center">
@@ -320,7 +320,7 @@ const Home = () => {
       {/* managemnt  */}
       <section className="w-full py-20 bg-white">
         <h2 className="text-2xl mt-20 text-center md:text-5xl font-semibold text-black">
-          Global Kokani Committees' Council <span className="text-blue-500">Management</span>
+          Global Kokani Committees&apos; Council <span className="text-blue-500">Management</span>
         </h2>
         <div className="w-full h-full flex flex-wrap justify-center gap-5 md:gap-10 pt-5 px-5 mt-10">
           <Card
