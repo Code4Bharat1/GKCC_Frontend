@@ -48,7 +48,7 @@ const EventVideos = () => {
   };
 
   return (
-    <div className="w-full md:mt-28">
+    <div className="w-full mt-32 md:mt-28">
       <div className="text-center mb-4">
         <h1 className="text-6xl font-bold text-blue-500">Video Gallery</h1>
         <p className="text-2xl text-black mt-6">Explore our collection of memorable moments</p>
