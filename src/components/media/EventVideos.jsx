@@ -15,7 +15,8 @@ const EventVideos = () => {
     const fetchVideos = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/videomedia/viewvideosofmediapage"
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/videomedia/viewvideosofmediapage`
+          
         );
         if (response.data.success) {
           setVideos(response.data.message);

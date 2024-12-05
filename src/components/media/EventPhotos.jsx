@@ -9,7 +9,11 @@ const Modal = ({ imageUrl, onClose }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
       <div className="relative bg-white p-4 rounded-lg shadow-lg">
-        <img src={imageUrl} alt="Full View" className="max-w-full max-h-[80vh] rounded-md" />
+        <img
+          src={imageUrl}
+          alt="Full View"
+          className="max-w-full max-h-[80vh] rounded-md"
+        />
         <button
           onClick={onClose}
           className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full"
@@ -31,7 +35,8 @@ const EventPhotos = () => {
     const fetchImages = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/photomedia/viewphotosofmediapage"
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/photomedia/viewphotosofmediapage`
+
         );
         if (response.data.success) {
           setImages(response.data.message);
@@ -55,13 +60,18 @@ const EventPhotos = () => {
 
   return (
     <div className="w-full md:mt-28">
-         <div className="text-center mb-4">
+      <div className="text-center mb-4">
         <h1 className="text-6xl font-bold text-blue-500">Image Gallery</h1>
-        <p className="text-2xl text-black mt-6">Explore our collection of memorable moments</p>
+        <p className="text-2xl text-black mt-6">
+          Explore our collection of memorable moments
+        </p>
       </div>
       {/* Modal for full view */}
       {selectedImage && (
-        <Modal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+        <Modal
+          imageUrl={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
       )}
 
       {/* Image Slider */}
