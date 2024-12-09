@@ -83,8 +83,8 @@ const Home = () => {
         const response = await axios.get("http://localhost:5001/api/sponsor/viewpopup");
         console.log("Fetched popup data:", response.data); // Debugging
 
-        if (response.data.success && response.data.message) {
-          setPopupData(response.data.message);
+        if (response.data.success && response.data.data) {
+          setPopupData(response.data.data);
           setIsModalOpen(true);
         } else {
           setErrorPopup("No popup data available");
@@ -232,7 +232,7 @@ const Home = () => {
       {/* Loading and Error States for Popup */}
       {loadingPopup && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="text-white">Loading popup...</div>
+          <div className="text-white"> </div>
         </div>
       )}
       {errorPopup && (

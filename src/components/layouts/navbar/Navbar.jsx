@@ -439,29 +439,29 @@ const Navbar = () => {
             ) : (
               <>
                 <div
-                  className="px-5 py-1 lg:px-10 lg:py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-full hover:bg-[#1A8FE3] hover:text-white text-base lg:text-[1vw] nav-button cursor-pointer relative"
+                  className="px-3 py-1 lg:px-2 lg:py-2  text-blue-500 rounded-full  text-base lg:text-[1vw] nav-button cursor-pointer relative"
                   onClick={toggleDropdown}
                 >
                   Register <IoIosArrowDown className="inline ml-1" />
                   {isDropdownOpen && (
-                    <div className="absolute top-[110%] left-0 mt-2 w-64 bg-white border border-[#1A8FE3] rounded-lg shadow-lg z-50 overflow-hidden">
+                    <div className="absolute top-[110%] left-0 mt-2 w-64 border border-black bg-white rounded-lg shadow-lg z-50 overflow-hidden">
                       <Link
                         href="/association-form"
-                        className="block px-4 py-2 text-[#1a8fe3] hover:bg-[#1A8FE3] hover:text-white"
+                        className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:text-white"
                         onClick={() => handleTabClick("Register")}
                       >
                         Association Membership
                       </Link>
                       <Link
                         href="/membership-form"
-                        className="block px-4 py-2 text-[#1a8fe3] hover:bg-[#1A8FE3] hover:texchangt-white"
+                        className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:texchangt-white"
                         onClick={() => handleTabClick("Register")}
                       >
                         Individual Membership
                       </Link>
                       <Link
                         href="/vendor-form"
-                        className="block px-4 py-2 text-[#1a8fe3] hover:bg-[#1A8FE3] hover:text-white"
+                        className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:text-white"
                         onClick={() => handleTabClick("Register")}
                       >
                         Vendors Membership
@@ -471,7 +471,7 @@ const Navbar = () => {
                 </div>
                 <Link
                   href="/login-form"
-                  className="px-5 py-1 lg:px-10 lg:py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-full hover:bg-[#1A8FE3] hover:text-white text-base lg:text-[1vw] nav-button"
+                  className="px-3 py-1 lg:px-4 lg:py-2 text-blue-500 rounded-full  text-base lg:text-[1vw] nav-button"
                   onClick={() => handleTabClick("Login")}
                 >
                   Log in
