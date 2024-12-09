@@ -11,7 +11,7 @@ const Sponsors = () => {
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
-        const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/sponsor/viewsponsors`);
         console.log("Fetched sponsors:", response.data); // Debug the response
 
         const sponsorArray = response.data.message || [];

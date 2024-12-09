@@ -43,8 +43,15 @@ const Home = () => {
   const [shuffledSponsors, setShuffledSponsors] = useState([]);
   const [loadingSponsors, setLoadingSponsors] = useState(true);
   const [errorSponsors, setErrorSponsors] = useState("");
+
+  // Popup State Variables
+  const [popupData, setPopupData] = useState(null);
+  const [loadingPopup, setLoadingPopup] = useState(true);
+  const [errorPopup, setErrorPopup] = useState("");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch Sponsors from the backend API
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
@@ -68,7 +75,78 @@ const Home = () => {
 
     fetchSponsors();
   }, []);
-  
+
+  // Fetch Popup Data from the backend API
+  useEffect(() => {
+    const fetchPopup = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/sponsor/viewpopup");
+        console.log("Fetched popup data:", response.data); // Debugging
+
+        if (response.data.success && response.data.message) {
+          setPopupData(response.data.message);
+          setIsModalOpen(true);
+        } else {
+          setErrorPopup("No popup data available");
+        }
+        setLoadingPopup(false);
+      } catch (error) {
+        console.error("Error fetching popup data:", error);
+        setErrorPopup("Failed to load popup data");
+        setLoadingPopup(false);
+      }
+    };
+
+    fetchPopup();
+  }, []);
+
+  // Shuffle sponsors periodically for dynamic effect
+  useEffect(() => {
+    if (sponsors.length === 0) return; // Exit if no sponsors
+
+    const shuffleInterval = setInterval(() => {
+      setShuffledSponsors((prev) => {
+        const half = Math.floor(prev.length / 2);
+        const firstHalf = prev.slice(0, half);
+        const shuffled = [...firstHalf].sort(() => Math.random() - 0.5);
+        return [...shuffled, ...shuffled];
+      });
+    }, 20000); // Shuffle every 20 seconds
+
+    return () => clearInterval(shuffleInterval);
+  }, [sponsors]);
+
+  // Manage body overflow when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]);
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Sample Media Data
   const mediaData = [
     { id: 1, image: "/images/bahrain.jpg", alt: "Media 1" },
     { id: 2, image: "/images/jubail.jpg", alt: "Media 2" },
@@ -77,11 +155,10 @@ const Home = () => {
     { id: 5, image: "/images/bahrain.jpg", alt: "Media 5" },
     // Add more media items as needed
   ];
-  
-  const [shuffledBrands, setShuffledBrands] = useState([
 
-  ]); // Duplicate for seamless scrolling
+  const [shuffledBrands, setShuffledBrands] = useState([]); // Duplicate for seamless scrolling
 
+  // Sample Vendors Data
   const vendors = [
     {
       id: 1,
@@ -119,87 +196,10 @@ const Home = () => {
     // Add more vendors as needed
   ];
 
- // Fetch sponsors from the backend API
- useEffect(() => {
-  const fetchSponsors = async () => {
-    try {
-      const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
-      console.log("Fetched sponsors:", response.data); // Debugging
-
-      const sponsorArray = response.data.message || [];
-      if (Array.isArray(sponsorArray)) {
-        setSponsors(sponsorArray);
-        setShuffledSponsors([...sponsorArray, ...sponsorArray]); // Duplicate for seamless scrolling
-      } else {
-        setErrorSponsors("Invalid data format received");
-      }
-      setLoadingSponsors(false);
-    } catch (err) {
-      console.error(err);
-      setErrorSponsors("Failed to load sponsors");
-      setLoadingSponsors(false);
-    }
-  };
-
-  fetchSponsors();
-}, []);
-
-// Shuffle sponsors periodically for dynamic effect
-useEffect(() => {
-  if (sponsors.length === 0) return; // Exit if no sponsors
-
-  const shuffleInterval = setInterval(() => {
-    setShuffledSponsors((prev) => {
-      const half = Math.floor(prev.length / 2);
-      const firstHalf = prev.slice(0, half);
-      const shuffled = [...firstHalf].sort(() => Math.random() - 0.5);
-      return [...shuffled, ...shuffled];
-    });
-  }, 20000); // Shuffle every 20 seconds
-
-  return () => clearInterval(shuffleInterval);
-}, [sponsors]);
-
-useEffect(() => {
-  setIsModalOpen(true);
-}, []);
-
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden"; 
-    } else {
-      document.body.style.overflow = "auto"; 
-    }
-
-   
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isModalOpen]); 
-
-  
-  useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === "Escape") {
-        setIsModalOpen(false);
-      }
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, []); 
-
- 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="w-screen h-screen">
       {/* Modal */}
-      {isModalOpen && (
+      {isModalOpen && popupData && (
         <div
           role="dialog"
           aria-modal="true"
@@ -212,7 +212,7 @@ useEffect(() => {
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal content
           >
             <Image
-              src="/images/bg-img.jpg" // Replace with your sponsor image path
+              src={popupData.logo} // Dynamic image from API
               alt="Sponsor"
               className="w-full h-auto"
               width={800} // Adjust as needed
@@ -220,12 +220,24 @@ useEffect(() => {
             />
             <button
               onClick={closeModal}
-              className="absolute top-2 right-2 w-[10%] md:w-[5%] bg-white text-red-500 rounded-full p-3  hover:bg-red-600 hover:text-white transition"
+              className="absolute top-2 right-2 w-10 h-10 bg-white text-red-500 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition"
               aria-label="Close Sponsor Modal"
             >
               &times;
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Loading and Error States for Popup */}
+      {loadingPopup && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="text-white">Loading popup...</div>
+        </div>
+      )}
+      {errorPopup && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="text-red-500">{errorPopup}</div>
         </div>
       )}
 
@@ -252,9 +264,8 @@ useEffect(() => {
           </p>
         </div>
       </div>
-      
-      
-      {/* slider hai */}
+
+      {/* Sponsors Slider Section */}
       <section className="pt-12 overflow-hidden mt-12">
         <div className="container mx-auto px-4 mb-16">
           {/* Heading Section */}
@@ -290,10 +301,10 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* about  Section */}
+      {/* About Section */}
       <h2 className="text-2xl mt-2 md:mt-16 text-center md:text-5xl font-semibold text-black">
-            About <span className="text-blue-500">Global Kokani Committees&apos; Council</span>
-          </h2>
+        About <span className="text-blue-500">Global Kokani Committees&apos; Council</span>
+      </h2>
       <div className="w-full h-[80%] p-5 md:p-10 flex flex-col-reverse md:flex-row items-center justify-center gap-5 md:gap-0 mt-24 md:mt-0">
         <div className="w-full md:w-1/2 h-full text-center md:text-left p-5 md:p-0 md:flex md:flex-col md:items-center md:justify-center">
           <div className="w-full">
@@ -397,7 +408,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* managemnt  */}
+      {/* Management Section */}
       <section className="w-full py-20 bg-white">
         <h2 className="text-2xl mt-20 text-center md:text-5xl font-semibold text-black">
           Global Kokani Committees&apos; Council <span className="text-blue-500">Management</span>
@@ -531,78 +542,77 @@ useEffect(() => {
                   </div>
                 </div>
               ))}
-              
             </div>
           </div>
         </div>
-        
       </div>
 
-{/* vendors */}
+      {/* Vendors Section */}
       <section className="w-full mt-2 md:mt-80 py-20 bg-white">
-      {/* Section Title */}
-      <h2 className="text-2xl text-center md:text-5xl font-semibold text-black">
-        Our <span className="text-blue-500">Vendors</span>
-      </h2>
+        {/* Section Title */}
+        <h2 className="text-2xl text-center md:text-5xl font-semibold text-black">
+          Our <span className="text-blue-500">Vendors</span>
+        </h2>
 
-      {/* Vendors Grid */}
-      <div className="flex-grow md:ml-80 mt-12 px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 xl:gap-16">
-          {vendors && vendors.length > 0 ? (
-            vendors.map((vendor) => (
-              <div
-                key={vendor.id}
-                className="bg-[#1A8FE3] rounded-3xl p-4 text-white shadow-lg flex flex-col items-center transition-transform transform hover:scale-105"
-              >
-                {/* Vendor Logo */}
-                <Image
-                  src={vendor.logo}
-                  alt={`${vendor.name} Logo`}
-                  width={500}
-                  height={400}
-                  className="w-full h-64 object-cover rounded-3xl mb-2"
-                />
+        {/* Vendors Grid */}
+        <div className="flex-grow md:ml-80 mt-12 px-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 xl:gap-16">
+            {vendors && vendors.length > 0 ? (
+              vendors.map((vendor) => (
+                <div
+                  key={vendor.id}
+                  className="bg-[#1A8FE3] rounded-3xl p-4 text-white shadow-lg flex flex-col items-center transition-transform transform hover:scale-105"
+                >
+                  {/* Vendor Logo */}
+                  <Image
+                    src={vendor.logo}
+                    alt={`${vendor.name} Logo`}
+                    width={500}
+                    height={400}
+                    className="w-full h-64 object-cover rounded-3xl mb-2"
+                  />
 
-                {/* Vendor Name */}
-                <h2 className="text-2xl font-bold mb-2 text-center">{vendor.name}</h2>
+                  {/* Vendor Name */}
+                  <h2 className="text-2xl font-bold mb-2 text-center">{vendor.name}</h2>
 
-                {/* Vendor Details */}
-                <p className="text-md text-center break-words">
-                  Category: {vendor.category.replace("_", " ")}
-                </p>
-                <p className="text-md text-center">Rating: {vendor.rating} Stars</p>
-                <p className="text-md text-center">Discount: {vendor.discount}%</p>
-                <p className="text-md text-center">City: {vendor.city}</p>
-                <p className="text-md text-center">Country: {vendor.country}</p>
-                <p className="text-md text-center">Contact: {vendor.contactNo}</p>
+                  {/* Vendor Details */}
+                  <p className="text-md text-center break-words">
+                    Category: {vendor.category.replace("_", " ")}
+                  </p>
+                  <p className="text-md text-center">Rating: {vendor.rating} Stars</p>
+                  <p className="text-md text-center">Discount: {vendor.discount}%</p>
+                  <p className="text-md text-center">City: {vendor.city}</p>
+                  <p className="text-md text-center">Country: {vendor.country}</p>
+                  <p className="text-md text-center">Contact: {vendor.contactNo}</p>
 
-                {/* View More Button */}
-                <Link href={`/vendors/${vendor.id}`}>
-                  <button className="mt-4 px-4 py-2 bg-white text-gray-500 rounded-lg hover:bg-gray-200 transition">
-                    View More
-                  </button>
-                </Link>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 col-span-full">
-              No vendors available at the moment.
-            </p>
-          )}
+                  {/* View More Button */}
+                  <Link href={`/vendors/${vendor.id}`}>
+                    <button className="mt-4 px-4 py-2 bg-white text-gray-500 rounded-lg hover:bg-gray-200 transition">
+                      View More
+                    </button>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 col-span-full">
+                No vendors available at the moment.
+              </p>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* View All Vendors Button */}
-      <div className="w-full flex justify-center mt-16">
-        <Link href="/vendors">
-          <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
-            View More
-          </button>
-        </Link>
-      </div>
-    </section>
-    {/* Media Section */}
-    <section className="w-full sm:-mt-12 py-20 bg-white">
+        {/* View All Vendors Button */}
+        <div className="w-full flex justify-center mt-16">
+          <Link href="/vendors">
+            <button className="relative inline-block px-6 py-2.5 text-white font-medium text-base sm:text-lg md:text-sm lg:text-base xl:text-lg leading-tight rounded-md shadow-inner bg-blue-500 hover:bg-blue-600 transition-all duration-300 ease-out overflow-hidden">
+              View More
+            </button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Media Section */}
+      <section className="w-full sm:-mt-12 py-20 bg-white">
         {/* Section Title */}
         <h2 className="text-2xl text-center md:text-5xl font-semibold text-blue-500">
           Media
@@ -649,7 +659,6 @@ useEffect(() => {
           </button>
         </Link>
       </div>
-      
 
       {/* Footer */}
       <div className="mt-[5%]">
@@ -660,8 +669,3 @@ useEffect(() => {
 };
 
 export default Home;
-
-
-
-
-
