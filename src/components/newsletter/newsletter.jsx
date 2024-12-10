@@ -139,7 +139,7 @@ const NewsLetter = () => {
               {/* Heading and Publish Date */}
               <div>
                 <h1 className="text-2xl md:text-5xl md:-mt-8 font-semibold">
-                  Global Kokani Committees' Council
+                  Global Kokani Committees&apos; Council
                 </h1>
                 {/* Publish Date */}
                 <p className=" md:mt-4 text-md md:text-2xl text-gray-500">
