@@ -56,7 +56,6 @@ const Home = () => {
     const fetchSponsors = async () => {
       try {
         const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
-        console.log("Fetched sponsors:", response.data); // Debugging
 
         const sponsorArray = response.data.message || [];
         if (Array.isArray(sponsorArray)) {

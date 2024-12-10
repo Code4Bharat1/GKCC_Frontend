@@ -228,7 +228,6 @@ const AssociationForm = () => {
   
       const result = await response.json();
       if (response.ok) {
-        console.log("Form submitted successfully:", result);
         alert("Form submitted successfully!");
   
         // Optionally clear form and localStorage

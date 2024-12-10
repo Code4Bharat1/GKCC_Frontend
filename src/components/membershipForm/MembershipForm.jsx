@@ -381,7 +381,6 @@ const MembershipForm = () => {
   }, [watchedFields, step]);
 
   const onSubmit = async (data, reset) => {
-    console.log("Form Data:", data);
 
     try {
       const response = await axios.post(
@@ -396,7 +395,6 @@ const MembershipForm = () => {
 
       if (response.status === 201) {
         // Handle success
-        console.log("Form submitted successfully:", response.data);
 
         // Show success notification
         toast.success("Form submitted successfully!", {

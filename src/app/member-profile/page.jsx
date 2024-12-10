@@ -85,7 +85,6 @@ const Profile = () => {
           return;
         }
 
-        console.log("Token and GKCCId found. Fetching profile data...");
 
         // Set token in the Authorization header
         const config = {
@@ -100,7 +99,6 @@ const Profile = () => {
           config
         );
 
-        console.log(profileResponse);
         // If the response doesn't contain the necessary data
         if (!profileResponse.data) {
           toast.error("No data returned from the server.");
@@ -110,7 +108,6 @@ const Profile = () => {
 
         const { data } = profileResponse.data;
 
-        console.log("Profile data received: ", data);
 
         // Sanitize spouseName: replace 'N/A' with empty string
         const sanitizedData = {
