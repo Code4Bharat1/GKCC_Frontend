@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { IoNewspaperSharp } from "react-icons/io5";
-import { FiSearch } from "react-icons/fi";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import axios from "axios";
 
@@ -19,7 +18,7 @@ const NewsLetter = () => {
     const fetchNewsletters = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/newsletter/view"
+          "https://api.gkcc.world/api/newsletter/view"
         );
         const sortedNewsletters = response.data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -52,6 +51,17 @@ const NewsLetter = () => {
     setFilteredNewsletters(filtered);
   };
 
+  // Format the date to a readable format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       {/* Hamburger Menu for Mobile */}
@@ -69,7 +79,7 @@ const NewsLetter = () => {
 
       {/* Sidebar */}
       <div
-        className={`absolute mt-8 md:mt-0 md:static z-10 md:z-auto top-0 left-0 h-full w-3/4 md:w-1/4 bg-blue-500 text-white p-4 transform ${
+        className={`absolute mt-8 md:mt-0 md:static z-10 md:z-auto top-0 left-0 min-h-screen w-3/4 md:w-1/4 bg-blue-500  text-white p-4 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0`}
       >
@@ -110,11 +120,36 @@ const NewsLetter = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-white overflow-y-auto">
+      <div className="flex-1 justify-center items-center p-6 bg-white overflow-y-auto ">
         {selectedNewsletter ? (
           <div className="space-y-6">
-            {/* Heading */}
-            <h1 className="text-2xl mt-8 md:text-4xl text-center font-bold text-blue-500 border-b pb-4">
+            {/* Flex container for image and heading */}
+            <div className="flex items-center border-b border-black gap-4 ">
+              {/* Image */}
+              <div className="w-full h-full md:w-56 md:h-56">
+                <Image
+                  src="/images/gkcc.png"
+                  alt="hi"
+                  className="rounded-lg"
+                  width={300}
+                  height={300}
+                  objectFit="cover"
+                />
+              </div>
+              {/* Heading and Publish Date */}
+              <div>
+                <h1 className="text-2xl md:text-5xl md:-mt-8 font-semibold">
+                  Global Kokani Committees' Council
+                </h1>
+                {/* Publish Date */}
+                <p className=" md:mt-4 text-md md:text-2xl text-gray-500">
+                  Publish Date: <br /> {formatDate(selectedNewsletter.date)}
+                </p>
+              </div>
+            </div>
+
+            {/* Heading from selected newsletter */}
+            <h1 className="text-2xl mt-4 md:text-4xl text-center font-bold text-blue-500 pb-4">
               {selectedNewsletter.heading}
             </h1>
 
