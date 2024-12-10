@@ -80,8 +80,8 @@ const Home = () => {
   useEffect(() => {
     const fetchPopup = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/sponsor/viewpopup");
-        console.log("Fetched popup data:", response.data); // Debugging
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/sponsor/viewpopup`);
 
         if (response.data.success && response.data.data) {
           setPopupData(response.data.data);

@@ -31,7 +31,8 @@ const EventPhotos = () => {
     const fetchImages = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/photomedia/viewphotosofmediapage"
+
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/photomedia/viewphotosofmediapage`
         );
         if (response.data.success) {
           setImages(response.data.message);
