@@ -120,7 +120,7 @@ const NewsLetter = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 justify-center items-center p-6 bg-white overflow-y-auto ">
+      <div className="flex-1 justify-center items-center p-6 bg-white md:overflow-y-auto ">
         {selectedNewsletter ? (
           <div className="space-y-6">
             {/* Flex container for image and heading */}
