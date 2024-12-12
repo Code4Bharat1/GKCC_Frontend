@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <div className="mt-24">
+      <div className="mt-36  md:mt-32">
         <VendorForm />
       </div>
       <div className="mt-2">

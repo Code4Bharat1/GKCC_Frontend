@@ -59,7 +59,7 @@ const EventPhotos = () => {
   }, [selectedAlbum]);
 
   return (
-    <div className="w-full mt-32 md:mt-28 px-4">
+    <div className="w-full mt-44 md:mt-36 px-4">
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-6xl font-bold text-blue-500">Pictures Gallery</h1>
         <p className="text-xl sm:text-2xl text-black mt-4">
@@ -152,7 +152,7 @@ const EventPhotos = () => {
           )}
 
           {/* Album Grid */}
-          <div className=" md:mt-32 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 p-4">
+          <div className=" md:mt-56 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 p-4">
             {selectedAlbum.photosdetails.map((image, index) => (
               <div
                 key={index}

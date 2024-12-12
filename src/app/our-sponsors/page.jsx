@@ -7,9 +7,12 @@ const page = () => {
   return (
     <div>
         <Navbar/>
+        <div className="mt-32">
 <Sponsors/>
          <Footer/>
     </div>
+    </div>
+
   )
 }
 

@@ -9,7 +9,7 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-16">
+      <div className="mt-32">
         <MembershipForm />
       </div>
       <div className="mt-2">

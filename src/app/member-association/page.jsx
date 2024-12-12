@@ -7,8 +7,10 @@ const page = () => {
   return (
     <div>
       <Navbar/>
+      <div className="mt-12">
       <MemberAssociation/>
       <Footer/>
+    </div>
     </div>
   )
 }

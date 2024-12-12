@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div className='w-screen h-screen overflow-x-hidden '>
       <Navbar />
-      <div className='mt-[20%] md:mt-[10%] lg:mt-[5%]'>
+      <div className='mt-[30%] md:mt-[10%] lg:mt-[5%]'>
       <NewsLetter />
       </div>
       

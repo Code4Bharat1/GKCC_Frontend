@@ -8,7 +8,7 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <div className="mt-16">
+      <div className="mt-36 md:mt-32">
         <AssociationForm />
       </div>
       <div className="mt-2">
