@@ -283,45 +283,45 @@ const Navbar = () => {
               className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
             >
               <h3 className="font-medium text-base lg:text-[1vw]">
-                Management <IoIosArrowDown className="inline ml-1" />
+                <Link href="/managements">Management</Link> <IoIosArrowDown className="inline ml-1" />
               </h3>
             </div>
             {isManagementDropdownOpen && (
               <div className="absolute top-[150%] left-0 mt-2 w-64 bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
                 <Link
-                  href="/managements/office-bearers"
+                  href="/managements/#OfficeBearers"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
                   Office Bearers
                 </Link>
                 <Link
-                  href="/managements/executive-managers"
+                  href="/managements/#ExecutiveManagers"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
                   Executive Council
                 </Link>
                 <Link
-                  href="/managements/coordination-committees"
+                  href="/managements/#CoordinationCommittees"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
                   Coordination Council
                 </Link>
                 <Link
-                  href="/managements/advisors"
+                  href="/managements/#Advisors"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
                   Patrons/Advisors
                 </Link>
                 <Link
-                  href="/managements/internal-committee"
+                  href="/managements/#InternalCommittee"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Management")}
                 >
-                  Internal Committee/Cells
+                  Sub Committees
                 </Link>
               </div>
             )}
@@ -357,13 +357,6 @@ const Navbar = () => {
             {isSponsorsDropdownOpen && (
               <div className="absolute top-[150%] left-0 mt-2 w-64 bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
                 <Link
-                  href="/vendors"
-                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
-                  onClick={() => handleTabClick("Our Vendors")}
-                >
-                  Our Vendors
-                </Link>
-                <Link
                   href="/our-sponsors"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Our Sponsors")}
@@ -371,11 +364,19 @@ const Navbar = () => {
                   Our Sponsors
                 </Link>
                 <Link
+                  href="/vendors"
+                  className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                  onClick={() => handleTabClick("Our Vendors")}
+                >
+                  Our Vendors
+                </Link>
+                
+                <Link
                   href="/wellwisher"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Our Well Wisher")}
                 >
-                  Our Well Wisher
+                  Our Well Wishers
                 </Link>
               </div>
             )}
@@ -398,21 +399,21 @@ const Navbar = () => {
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Newsletter")}
                 >
-                  Newsletter
+                  NewsLetters
                 </Link>
                 <Link
                   href="/event-videos"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Event Video")}
                 >
-                  Event Video
+                  Event Videos
                 </Link>
                 <Link
                   href="/event-photos"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("Event Photos")}
                 >
-                  Event Photos
+                  Pictures Gallery
                 </Link>
               </div>
             )}
@@ -444,7 +445,7 @@ const Navbar = () => {
                 >
                   Register <IoIosArrowDown className="inline ml-1" />
                   {isDropdownOpen && (
-                    <div className="absolute top-[110%] left-0 mt-2 w-64 border border-black bg-white rounded-lg shadow-lg z-50 overflow-hidden">
+                    <div className="absolute top-[110%] right-2 mt-2 w-64 border border-black bg-white rounded-lg shadow-lg z-50 overflow-hidden">
                       <Link
                         href="/association-form"
                         className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:text-white"
@@ -453,19 +454,20 @@ const Navbar = () => {
                         Association Membership
                       </Link>
                       <Link
-                        href="/membership-form"
-                        className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:texchangt-white"
-                        onClick={() => handleTabClick("Register")}
-                      >
-                        Individual Membership
-                      </Link>
-                      <Link
                         href="/vendor-form"
                         className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:text-white"
                         onClick={() => handleTabClick("Register")}
                       >
                         Vendors Membership
                       </Link>
+                      <Link
+                        href="/membership-form"
+                        className="block px-4 py-2 text-black hover:bg-[#1A8FE3] hover:texchangt-white"
+                        onClick={() => handleTabClick("Register")}
+                      >
+                        Individual Membership
+                      </Link>
+                      
                     </div>
                   )}
                 </div>
@@ -597,7 +599,7 @@ const Navbar = () => {
                       handleMobileLinkClick("/managements/internal-committee", "Management")
                     }
                   >
-                    Internal Committee/Cells
+                    Sub Committees
                   </Link>
                 </div>
               )}
@@ -624,14 +626,7 @@ const Navbar = () => {
               </div>
               {isSponsorsDropdownOpen && (
                 <div className="absolute top-[50%] left-0 mt-2 w-full bg-white border border-black rounded-lg shadow-lg z-50 overflow-hidden">
-                  <Link
-                    href="/vendors"
-                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
-                    onClick={() => handleMobileLinkClick("/vendors", "Our Vendors")}
-                  >
-                    Our Vendors
-                  </Link>
-                  <Link
+                   <Link
                     href="/our-sponsors"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/sponsore", "Our Sponsors")}
@@ -639,11 +634,19 @@ const Navbar = () => {
                     Our Sponsors
                   </Link>
                   <Link
+                    href="/vendors"
+                    className="block px-4 py-2 text-black hover:bg-black hover:text-white"
+                    onClick={() => handleMobileLinkClick("/vendors", "Our Vendors")}
+                  >
+                    Our Vendors
+                  </Link>
+                 
+                  <Link
                     href="/wellwisher"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/wellwisher", "Our Well Wisher")}
                   >
-                    Our Well Wisher
+                    Our Well Wishers
                   </Link>
                 </div>
               )}
@@ -666,21 +669,21 @@ const Navbar = () => {
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/newsletter", "Newsletter")}
                   >
-                    Newsletter
+                    NewsLetters
                   </Link>
                   <Link
                     href="/event-videos"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/eventvi", "Event Video")}
                   >
-                    Event Video
+                    Event Videos
                   </Link>
                   <Link
                     href="/event-photos"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/eventph", "Event Photos")}
                   >
-                    Event Photos
+                    Pictures Gallery
                   </Link>
                 </div>
               )}
@@ -718,15 +721,6 @@ const Navbar = () => {
                     Association Membership
                   </Link>
                   <Link
-                    href="/membership-form"
-                    className="block w-full text-center px-4 py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-lg hover:bg-[#1A8FE3] hover:text-white text-base"
-                    onClick={() =>
-                      handleMobileLinkClick("/membership-form", "Register")
-                    }
-                  >
-                    Individual Membership
-                  </Link>
-                  <Link
                     href="/vendor-form"
                     className="block w-full text-center px-4 py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-lg hover:bg-[#1A8FE3] hover:text-white text-base"
                     onClick={() =>
@@ -735,6 +729,16 @@ const Navbar = () => {
                   >
                     Vendors Membership
                   </Link>
+                  <Link
+                    href="/membership-form"
+                    className="block w-full text-center px-4 py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-lg hover:bg-[#1A8FE3] hover:text-white text-base"
+                    onClick={() =>
+                      handleMobileLinkClick("/membership-form", "Register")
+                    }
+                  >
+                    Individual Membership
+                  </Link>
+                  
                   <Link
                     href="/login-form"
                     className="block w-full text-center px-4 py-2 border-2 border-[#1A8FE3] text-[#1a8fe3] rounded-lg hover:bg-[#1A8FE3] hover:text-white text-base"

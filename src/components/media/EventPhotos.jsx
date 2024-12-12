@@ -61,7 +61,7 @@ const EventPhotos = () => {
   return (
     <div className="w-full mt-32 md:mt-28 px-4">
       <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-6xl font-bold text-blue-500">Event Gallery</h1>
+        <h1 className="text-4xl md:text-6xl font-bold text-blue-500">Picture Gallery</h1>
         <p className="text-xl sm:text-2xl text-black mt-4">
           Explore our collection of memorable albums and moments
         </p>
