@@ -79,7 +79,7 @@ const NewsLetter = () => {
 
       {/* Sidebar */}
       <div
-        className={`absolute mt-8 md:mt-0 md:static z-10 md:z-auto top-0 left-0 min-h-screen w-3/4 md:w-1/4 bg-blue-500  text-white p-4 transform ${
+        className={`absolute mt-32  md:mt-2 md:static z-10 md:z-auto top-0 left-0 min-h-screen w-3/4 md:w-1/4 bg-blue-500  text-white p-4 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0`}
       >

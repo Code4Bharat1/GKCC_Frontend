@@ -4,7 +4,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className="w-screen h-screen overflow-x-hidden">
+    <div className="w-screen mt-12 h-screen overflow-x-hidden">
      
       <ExecutiveManagers />
 

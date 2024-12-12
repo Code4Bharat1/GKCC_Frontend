@@ -10,7 +10,7 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <div className="w-screen h-full  z-51 overflow-x-hidden mt-[4%]">
+      <div className="w-screen h-full  z-51 overflow-x-hidden mt-[12%] md:mt-2">
         <OfficeBearers />
         <ExecutiveManagers />
         <CoordinationCommittees />
