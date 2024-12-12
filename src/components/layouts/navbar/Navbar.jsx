@@ -194,20 +194,20 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full px-5 py-4 lg:px-5 lg:h-[12vh] flex justify-between items-center shadow-md fixed top-0 z-50 bg-white">
+      <div className="w-full px-6 py-4 lg:px-6 lg:h-[14vh] flex justify-between items-center shadow-md fixed top-0 z-50 bg-white">
         {/* Logo Section */}
-        <div className="flex items-center gap-2">
+        <div className="flex md:-ml-6 items-center gap-2">
           <Link href="/" onClick={() => handleTabClick("Home")}>
             <Image
               src="/images/gkcclogo.png"
               alt="Logo"
-              width={80}
-              height={80}
+              width={160}
+              height={160}
               className="nav-logo"
             />
           </Link>
           <Link href="/" onClick={() => handleTabClick("Home")}>
-            <span className="text-xs lg:text-[1vw] font-bold cursor-pointer">
+            <span className="text-sm lg:text-[1.3vw] font-bold cursor-pointer">
               Global Kokani Committees&apos; Council
             </span>
           </Link>
@@ -221,7 +221,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex flex-row gap-8 items-center">
+        <div className="hidden lg:flex flex-row gap-6 items-center">
           {/* 1. Home */}
           <Link
             href="/"
@@ -256,21 +256,21 @@ const Navbar = () => {
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("About GKCC")}
                 >
-                  Vision Mission
+                  Vision/Mission
                 </Link>
                 <Link
                   href="/aboutus/core-value"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("About GKCC")}
                 >
-                  Core Value
+                  Core Values
                 </Link>
                 <Link
                   href="/aboutus/what-we-do"
                   className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                   onClick={() => handleTabClick("About GKCC")}
                 >
-                  What We Do
+                  What we do
                 </Link>
               </div>
             )}
@@ -351,7 +351,7 @@ const Navbar = () => {
               className="nav-item flex flex-col items-center relative cursor-pointer p-2 lg:p-0"
             >
               <h3 className="font-medium text-base lg:text-[1vw]">
-                Sponsors / Vendors <IoIosArrowDown className="inline ml-1" />
+                Partners <IoIosArrowDown className="inline ml-1" />
               </h3>
             </div>
             {isSponsorsDropdownOpen && (
@@ -420,7 +420,7 @@ const Navbar = () => {
           </div>
 
           {/* 7. Register */}
-          <div className="flex gap-2 relative">
+          <div className="flex relative">
             {isLoggedIn ? (
               <>
                 <Link
@@ -524,21 +524,21 @@ const Navbar = () => {
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/aboutus/vission", "About GKCC")}
                   >
-                    Vision Mission
+                    Vision/Mission
                   </Link>
                   <Link
                     href="/aboutus/core-value"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/aboutus/core-value", "About GKCC")}
                   >
-                    Core Value
+                    Core Values
                   </Link>
                   <Link
                     href="/aboutus/what-we-do"
                     className="block px-4 py-2 text-black hover:bg-black hover:text-white"
                     onClick={() => handleMobileLinkClick("/aboutus/what-we-do", "About GKCC")}
                   >
-                    What We Do
+                    What we do
                   </Link>
                 </div>
               )}
@@ -621,7 +621,7 @@ const Navbar = () => {
                 className="nav-item flex flex-col relative cursor-pointer"
               >
                 <h3 className="font-medium text-lg">
-                  Sponsors / Vendors <IoIosArrowDown className="inline ml-1" />
+                  Partners <IoIosArrowDown className="inline ml-1" />
                 </h3>
               </div>
               {isSponsorsDropdownOpen && (
