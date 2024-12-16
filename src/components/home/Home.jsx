@@ -39,6 +39,9 @@ const SingleBrand = ({ sponsor }) => {
 };
 
 const Home = () => {
+  const [sections, setSections] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const [sponsors, setSponsors] = useState([]);
   const [shuffledSponsors, setShuffledSponsors] = useState([]);
   const [loadingSponsors, setLoadingSponsors] = useState(true);
@@ -51,6 +54,39 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/sponsor/getsections`
+        );
+        if (response.status === 200 && response.data.sponsors) {
+          // Flattening sections from all sponsors
+          const allSections = response.data.sponsors.flatMap((sponsor) =>
+            sponsor.sections.map((section) => ({
+              sponsorName: sponsor.name,
+              sponsorId: sponsor._id,
+              sponsorLogo: sponsor.logo, 
+              sectionName: section.sectionName,
+              selectedOption: section.selectedOption,
+              link: section.selectedOption === "brochure" ? sponsor.brochure : sponsor.websitelink,
+            }))
+          );
+          setSections(allSections);
+        } else {
+          setError("No sections data available.");
+        }
+      } catch (err) {
+        console.error("Error fetching sections:", err);
+        setError("Failed to load sections. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, []);
   // Fetch Sponsors from the backend API
   useEffect(() => {
     const fetchSponsors = async () => {
@@ -267,41 +303,41 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="lg:w-[15%] flex flex-wrap lg:flex-col justify-evenly items-center lg:gap-7 gap-5 lg:h-[90vh]  lg:mt-20 lg:flex-nowrap p-4 py-[1px]">
-          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg lg:mt-7">
-            <Image
-              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
-              width={130}
-              height={120}
-              className="rounded-lg w-full h-full"
-            />
+        <div className=" mt-32 grid grid-cols-2 md:grid-cols-4 gap-6">
+        {sections.slice(0, 4).map((section, index) => (
+          <div
+            key={index}
+            className="bg-white p-4 border rounded-lg shadow-md text-center"
+          >
+            {/* Sponsor Logo */}
+            <div className="relative w-full h-32 mb-4">
+              <img
+                src={section.sponsorLogo}
+                alt={`${section.sponsorName} Logo`}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            {/* Sponsor Name */}
+            <h3 className="text-lg font-bold text-gray-800 mb-2">
+              {section.sponsorName}
+            </h3>
+            {/* Section Name */}
+            <p className="text-gray-600 mb-4">{section.sectionName}</p>
+            {/* Link Button */}
+            <a
+              href={section.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 transition"
+            >
+              {section.selectedOption === "brochure"
+                ? "View Brochure"
+                : "Visit Website"}
+            </a>
           </div>
-          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image
-              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
-              width={130}
-              height={120}
-              className="rounded-lg w-full h-full"
-            />
-          </div>
-          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image
-              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
-              width={130}
-              height={120}
-              className="rounded-lg w-full h-full"
-            />
-          </div>
-          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image
-              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
-              width={130}
-              height={120}
-              className="rounded-lg w-full h-full"
-            />
-          </div>
-        </div>
+        ))}
       </div>
+    </div>
 
       {/* Sponsors Slider Section */}
       <section className="pt-12 overflow-hidden mt-12">
