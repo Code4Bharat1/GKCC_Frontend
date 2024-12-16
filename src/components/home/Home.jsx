@@ -303,37 +303,30 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className=" mt-32 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className=" lg:mt-28 flex lg:w-[15%] lg:flex-col justify-evenly items-center p-3 gap-4 flex-wrap">
         {sections.slice(0, 4).map((section, index) => (
           <div
             key={index}
-            className="bg-white p-4 border rounded-lg shadow-md text-center"
+            className="bg-white border rounded-lg shadow-md text-center w-["
           >
             {/* Sponsor Logo */}
-            <div className="relative w-full h-32 mb-4">
-              <img
-                src={section.sponsorLogo}
-                alt={`${section.sponsorName} Logo`}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            {/* Sponsor Name */}
-            <h3 className="text-lg font-bold text-gray-800 mb-2">
-              {section.sponsorName}
-            </h3>
-            {/* Section Name */}
-            <p className="text-gray-600 mb-4">{section.sectionName}</p>
-            {/* Link Button */}
-            <a
-              href={section.link}
+            <div className="w-[130px] h-[100px] flex-wrap">
+              <Link href={section.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white bg-blue-500 py-2 px-4 rounded-md hover:bg-blue-600 transition"
-            >
-              {section.selectedOption === "brochure"
+              {...section.selectedOption === "brochure"
                 ? "View Brochure"
-                : "Visit Website"}
-            </a>
+                : "Visit Website"}>
+                <Image
+                  src={section.sponsorLogo}
+                  alt={`${section.sponsorName} Logo`}
+                  className="w-full h-full object-contain"
+                  width={130}
+                  height={120}
+                />
+              </Link>
+            </div>
+           
           </div>
         ))}
       </div>
