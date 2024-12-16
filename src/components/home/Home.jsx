@@ -269,16 +269,36 @@ const Home = () => {
         </div>
         <div className="lg:w-[15%] flex flex-wrap lg:flex-col justify-evenly items-center lg:gap-7 gap-5 lg:h-[90vh]  lg:mt-20 lg:flex-nowrap p-4 py-[1px]">
           <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg lg:mt-7">
-            <Image />
+            <Image
+              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
+              width={130}
+              height={120}
+              className="rounded-lg w-full h-full"
+            />
           </div>
           <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image />
+            <Image
+              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
+              width={130}
+              height={120}
+              className="rounded-lg w-full h-full"
+            />
           </div>
           <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image />
+            <Image
+              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
+              width={130}
+              height={120}
+              className="rounded-lg w-full h-full"
+            />
           </div>
           <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
-            <Image />
+            <Image
+              src="/images/maxime-cros-nsOEWXw0LUk-unsplash.jpg"
+              width={130}
+              height={120}
+              className="rounded-lg w-full h-full"
+            />
           </div>
         </div>
       </div>
