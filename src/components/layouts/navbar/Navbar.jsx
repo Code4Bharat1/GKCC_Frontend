@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
-  const [dropdownState, setDropdownState] = useState({});
+  const [dropdownState, setDropdownState] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileRoute, setProfileRoute] = useState("/profile");
 
@@ -36,11 +36,9 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
   const toggleDesktopMenu = () => setIsDesktopMenuOpen((prev) => !prev);
-  const toggleDropdown = (key) =>
-    setDropdownState((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+  const toggleDropdown = (key) => {
+    setDropdownState((prev) => (prev === key ? null : key)); // Toggle the same dropdown or open a new one
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -76,34 +74,35 @@ const Navbar = () => {
 
           {/* About Us Dropdown */}
           <div className="relative">
-            <button
-              onClick={() => toggleDropdown("about")}
-              className="text-lg font-medium hover:text-blue-500 flex items-center"
-            >
-              About Us <IoIosArrowDown className="ml-1" />
-            </button>
-            {dropdownState.about && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-300 rounded shadow-lg">
-                <Link
-                  href="/aboutus/vission"
-                  className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
-                >
-                  Vision/Mission
-                </Link>
-                <Link
-                  href="/aboutus/core-value"
-                  className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
-                >
-                  Core Values
-                </Link>
-                <Link
-                  href="/aboutus/what-we-do"
-                  className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
-                >
-                  What We Do
-                </Link>
-              </div>
-            )}
+          <button
+  onClick={() => toggleDropdown("about")}
+  className="text-lg font-medium hover:text-blue-500 flex items-center"
+>
+  About Us <IoIosArrowDown className="ml-1" />
+</button>
+{dropdownState === "about" && (
+  <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-300 rounded shadow-lg">
+    <Link
+      href="/aboutus/vission"
+      className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
+    >
+      Vision/Mission
+    </Link>
+    <Link
+      href="/aboutus/core-value"
+      className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
+    >
+      Core Values
+    </Link>
+    <Link
+      href="/aboutus/what-we-do"
+      className="block px-4 py-2 text-sm hover:bg-blue-500 hover:text-white"
+    >
+      What We Do
+    </Link>
+  </div>
+)}
+
           </div>
           {/* register */}
           <div className="relative">
@@ -113,7 +112,7 @@ const Navbar = () => {
             >
               Register <IoIosArrowDown className="ml-1" />
             </button>
-            {dropdownState.register && (
+            {dropdownState === "register" &&(
               <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-300 rounded shadow-lg">
                 <Link
                         href="/association-form"
@@ -172,7 +171,7 @@ const Navbar = () => {
 
       {/* Desktop Hamburger Menu */}
       {isDesktopMenuOpen && (
-        <div className="hidden lg:block fixed top-[14vh] right-4 bg-white shadow-md border border-gray-200 rounded-md w-64 z-50">
+        <div className="hidden lg:block fixed top-[14vh] h-[100%] right-0 bg-white shadow-md border border-gray-200 rounded-md w-64 z-50">
           <ul className="flex flex-col gap-4 p-4">
             <div className="relative">
               
@@ -183,7 +182,7 @@ const Navbar = () => {
                 Management <IoIosArrowDown className="ml-1"
                 onClick={() => toggleDropdown("management")} />
               </button>
-              {dropdownState.management && (
+              {dropdownState === "management" &&(
                 <div className="pl-4">
                   <Link
                     href="/managements/office-bearers"
@@ -231,7 +230,7 @@ const Navbar = () => {
               >
                 Sponsors/Vendors <IoIosArrowDown className="ml-1" />
               </button>
-              {dropdownState.sponsors && (
+              {dropdownState === "sponsors" &&  (
                 <div className="pl-4">
                   <Link href="/our-sponsors" className="block py-2 text-sm text-center hover:bg-blue-500 hover:text-white">
                     Our Sponsors
@@ -255,7 +254,7 @@ const Navbar = () => {
               >
                 Media <IoIosArrowDown className="ml-1" />
               </button>
-              {dropdownState.media && (
+              {dropdownState === "media" && (
                 <div className="pl-4">
                   <Link href="/newsletter" className="block py-2 text-sm text-center hover:bg-blue-500 hover:text-white">
                     Newsletters
