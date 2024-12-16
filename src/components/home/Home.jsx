@@ -55,7 +55,9 @@ const Home = () => {
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
-        const response = await axios.get("https://api.gkcc.world/api/sponsor/viewsponsors");
+        const response = await axios.get(
+          "https://api.gkcc.world/api/sponsor/viewsponsors"
+        );
 
         const sponsorArray = response.data.message || [];
         if (Array.isArray(sponsorArray)) {
@@ -79,8 +81,9 @@ const Home = () => {
   useEffect(() => {
     const fetchPopup = async () => {
       try {
-
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/sponsor/viewpopup`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/sponsor/viewpopup`
+        );
 
         if (response.data.success && response.data.data) {
           setPopupData(response.data.data);
@@ -241,26 +244,42 @@ const Home = () => {
       )}
 
       {/* Home Section */}
-      <div className="w-full mt-20 h-[90vh] flex items-center justify-center flex-col relative">
-        <div className="absolute w-full h-full">
-          <div className="absolute inset-0 w-full h-full">
-            <Image
-              src="/images/bg-img.jpg"
-              alt="Background"
-              className="z-0 w-full h-full"
-              width={1920}
-              height={1080}
-            />
+      <div className="block lg:flex w-full flex-row-reverse">
+        <div className="lg:w-[85%] w-full float-right lg:mt-20 lg:h-[90vh] h-[50vh] mt-16 flex items-center justify-center flex-col relative">
+          <div className="absolute w-full lg:h-full h-[90%]">
+            <div className="absolute inset-0 w-full lg:h-full ">
+              <Image
+                src="/images/bg-img.jpg"
+                alt="Background"
+                className="z-0 w-full float-right h-full"
+                width={1920}
+                height={1080}
+              />
+            </div>
+            <div className="absolute inset-0 w-full h-full bg-black opacity-70 z-0"></div>
           </div>
-          <div className="absolute inset-0 w-full h-full bg-black opacity-70 z-0"></div>
+          <div className="w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%] h-[70%]lg:h-full text-center flex items-center justify-center flex-col gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 pt-10 sm:pt-12 md:pt-16 lg:pt-20 xl:pt-24 relative z-10">
+            <h1 className="text-[8vw] sm:text-[6vw] md:text-[4vw] lg:text-[3vw] xl:text-[2.5vw] text-white font-bold leading-none uppercase">
+              Welcome to <br /> Global Kokani Committees Council (GKCC)
+            </h1>
+            <p className="text-[4vw] sm:text-[3vw] md:text-[2vw] lg:text-[1.5vw] xl:text-[1.2vw] text-blue-500 font-medium capitalize">
+              We serve better -- together
+            </p>
+          </div>
         </div>
-        <div className="w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%] h-full text-center flex items-center justify-center flex-col gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 pt-10 sm:pt-12 md:pt-16 lg:pt-20 xl:pt-24 relative z-10">
-          <h1 className="text-[8vw] sm:text-[6vw] md:text-[4vw] lg:text-[3vw] xl:text-[2.5vw] text-white font-bold leading-none uppercase">
-            Welcome to <br /> Global Kokani Committees Council (GKCC)
-          </h1>
-          <p className="text-[4vw] sm:text-[3vw] md:text-[2vw] lg:text-[1.5vw] xl:text-[1.2vw] text-blue-500 font-medium capitalize">
-            We serve better -- together
-          </p>
+        <div className="lg:w-[15%] flex flex-wrap lg:flex-col justify-evenly items-center lg:gap-7 gap-5 lg:h-[90vh]  lg:mt-20 lg:flex-nowrap p-4 py-[1px]">
+          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg lg:mt-7">
+            <Image />
+          </div>
+          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
+            <Image />
+          </div>
+          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
+            <Image />
+          </div>
+          <div className="h-[120px] lg:w-[130px] w-[160px] bg-slate-300 rounded-lg">
+            <Image />
+          </div>
         </div>
       </div>
 
@@ -276,7 +295,9 @@ const Home = () => {
 
           {/* Handling Loading and Error States */}
           {loadingSponsors ? (
-            <div className="text-center text-blue-500 py-8">Loading sponsors...</div>
+            <div className="text-center text-blue-500 py-8">
+              Loading sponsors...
+            </div>
           ) : errorSponsors ? (
             <div className="text-center text-red-500 py-8">{errorSponsors}</div>
           ) : (
@@ -292,7 +313,10 @@ const Home = () => {
                 }}
               >
                 {shuffledSponsors.map((sponsor, index) => (
-                  <SingleBrand key={`${sponsor._id || sponsor.id}-${index}`} sponsor={sponsor} />
+                  <SingleBrand
+                    key={`${sponsor._id || sponsor.id}-${index}`}
+                    sponsor={sponsor}
+                  />
                 ))}
               </motion.div>
             </div>
@@ -302,7 +326,10 @@ const Home = () => {
 
       {/* About Section */}
       <h2 className="text-2xl mt-2 md:mt-16 text-center md:text-5xl font-semibold text-black">
-        About <span className="text-blue-500">Global Kokani Committees&apos; Council</span>
+        About{" "}
+        <span className="text-blue-500">
+          Global Kokani Committees&apos; Council
+        </span>
       </h2>
       <div className="w-full h-[80%] p-5 md:p-10 flex flex-col-reverse md:flex-row items-center justify-center gap-5 md:gap-0 mt-24 md:mt-0">
         <div className="w-full md:w-1/2 h-full text-center md:text-left p-5 md:p-0 md:flex md:flex-col md:items-center md:justify-center">
@@ -410,7 +437,8 @@ const Home = () => {
       {/* Management Section */}
       <section className="w-full py-20 bg-white">
         <h2 className="text-2xl mt-20 text-center md:text-5xl font-semibold text-black">
-          Global Kokani Committees&apos; Council <span className="text-blue-500">Management</span>
+          Global Kokani Committees&apos; Council{" "}
+          <span className="text-blue-500">Management</span>
         </h2>
         <div className="w-full h-full flex flex-wrap justify-center gap-5 md:gap-10 pt-5 px-5 mt-10">
           <Card
@@ -572,17 +600,27 @@ const Home = () => {
                   />
 
                   {/* Vendor Name */}
-                  <h2 className="text-2xl font-bold mb-2 text-center">{vendor.name}</h2>
+                  <h2 className="text-2xl font-bold mb-2 text-center">
+                    {vendor.name}
+                  </h2>
 
                   {/* Vendor Details */}
                   <p className="text-md text-center break-words">
                     Category: {vendor.category.replace("_", " ")}
                   </p>
-                  <p className="text-md text-center">Rating: {vendor.rating} Stars</p>
-                  <p className="text-md text-center">Discount: {vendor.discount}%</p>
+                  <p className="text-md text-center">
+                    Rating: {vendor.rating} Stars
+                  </p>
+                  <p className="text-md text-center">
+                    Discount: {vendor.discount}%
+                  </p>
                   <p className="text-md text-center">City: {vendor.city}</p>
-                  <p className="text-md text-center">Country: {vendor.country}</p>
-                  <p className="text-md text-center">Contact: {vendor.contactNo}</p>
+                  <p className="text-md text-center">
+                    Country: {vendor.country}
+                  </p>
+                  <p className="text-md text-center">
+                    Contact: {vendor.contactNo}
+                  </p>
 
                   {/* View More Button */}
                   <Link href={`/vendors/${vendor.id}`}>
