@@ -18,7 +18,7 @@ const NewsLetter = () => {
     const fetchNewsletters = async () => {
       try {
         const response = await axios.get(
-          " https://api.gkcc.world/api/newsletter/view"
+          " https://api.gkcc.world/api/newsletter/viewable"
         );
         const sortedNewsletters = response.data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
