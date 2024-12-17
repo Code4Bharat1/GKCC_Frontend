@@ -18,7 +18,7 @@ const NewsLetter = () => {
     const fetchNewsletters = async () => {
       try {
         const response = await axios.get(
-          "https://api.gkcc.world/api/newsletter/view"
+          " https://api.gkcc.world/api/newsletter/view"
         );
         const sortedNewsletters = response.data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -55,10 +55,9 @@ const NewsLetter = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
       day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
@@ -79,7 +78,7 @@ const NewsLetter = () => {
 
       {/* Sidebar */}
       <div
-        className={`absolute mt-32  md:mt-2 md:static z-10 md:z-auto top-0 left-0 min-h-screen w-3/4 md:w-1/4 bg-blue-500  text-white p-4 transform ${
+        className={`absolute mt-32  md:mt-2 md:static z-10 md:z-auto top-0 left-0 min-h-screen w-3/4 md:w-1/5 bg-blue-500  text-white p-4 transform md:overflow-y-auto ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0`}
       >
@@ -120,16 +119,16 @@ const NewsLetter = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 justify-center items-center p-6 bg-white md:overflow-y-auto ">
+      <div className="flex-1 justify-center items-center p-6 bg-white md:overflow-y-auto">
         {selectedNewsletter ? (
           <div className="space-y-6">
             {/* Flex container for image and heading */}
-            <div className="flex items-center border-b border-black gap-4 ">
+            <div className="flex mt-8 items-center gap-4">
               {/* Image */}
-              <div className="w-full h-full md:w-56 md:h-56">
+              <div className="w-full h-full md:w-60 md:h-64">
                 <Image
                   src="/images/gkcc.png"
-                  alt="hi"
+                  alt="Newsletter"
                   className="rounded-lg"
                   width={300}
                   height={300}
@@ -138,13 +137,20 @@ const NewsLetter = () => {
               </div>
               {/* Heading and Publish Date */}
               <div>
-                <h1 className="text-2xl md:text-5xl md:-mt-8 font-semibold">
+                {/* Title */}
+                <p className="md:mt-2 text-end text-md md:text-xl text-black">
+                  {selectedNewsletter.title}
+                </p>
+                {/* Date */}
+                <p className="md:mt-2 text-end text-md md:text-xl text-black">
+                  {formatDate(selectedNewsletter.date)}
+                </p>
+                <h1 className="text-2xl md:text-5xl md:mt-2 font-semibold">
                   Global Kokani Committees&apos; Council
                 </h1>
-                {/* Publish Date */}
-                <p className=" md:mt-4 text-md md:text-2xl text-gray-500">
-                  Publish Date: <br /> {formatDate(selectedNewsletter.date)}
-                </p>
+                <h2 className="mt-8 -ml-12 md:-ml-0 md:mt-16 text-2xl md:text-5xl border-b-4 border-black font-syne font-bold text-center">
+                  Newsletter
+                </h2>
               </div>
             </div>
 
@@ -153,43 +159,62 @@ const NewsLetter = () => {
               {selectedNewsletter.heading}
             </h1>
 
-            {/* Paragraph 1 and Image 1 */}
-            <div className="flex flex-col-reverse md:flex-row items-center gap-6">
-              <p className="w-full md:w-3/4 text-gray-700 text-lg text-center">
-                {selectedNewsletter.firstpara}
-              </p>
-              <div className="w-full md:w-1/2">
-                <Image
-                  src={selectedNewsletter.firstimage}
-                  alt={`${selectedNewsletter.title} Image 1`}
-                  className="rounded-lg shadow-lg"
-                  width={400}
-                  height={300}
-                  objectFit="cover"
-                />
-              </div>
-            </div>
+            {/* Dynamic Sections */}
+            {selectedNewsletter.section?.map((section, index) => {
+              const { photo, text } = section;
 
-            {/* Paragraph 2 and Image 2 */}
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-full md:w-1/2">
-                <Image
-                  src={selectedNewsletter.secondimage}
-                  alt={`${selectedNewsletter.title} Image 2`}
-                  className="rounded-lg shadow-lg"
-                  width={400}
-                  height={300}
-                  objectFit="cover"
-                />
-              </div>
-              <p className="w-full md:w-3/4 text-gray-700 text-lg text-center">
-                {selectedNewsletter.secondpara}
-              </p>
-            </div>
+              // Center Image Only
+              if (photo && !text) {
+                return (
+                  <div key={index} className="flex justify-center my-6">
+                    <Image
+                      src={photo}
+                      alt={`Section ${index + 1}`}
+                      width={500}
+                      height={300}
+                      className="rounded-lg shadow-lg"
+                    />
+                  </div>
+                );
+              }
+
+              // Center Text Only
+              if (text && !photo) {
+                return (
+                  <div key={index} className="text-center my-6">
+                    <p className="text-gray-700 text-lg">{text}</p>
+                  </div>
+                );
+              }
+
+              // Text and Image Side by Side
+              if (photo && text) {
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col md:flex-row items-center gap-6 my-6"
+                  >
+                    <p className="w-full md:w-1/2 text-gray-700 text-lg">
+                      {text}
+                    </p>
+                    <div className="w-full md:w-1/2">
+                      <Image
+                        src={photo}
+                        alt={`Section ${index + 1}`}
+                        width={500}
+                        height={300}
+                        className="rounded-lg shadow-lg"
+                      />
+                    </div>
+                  </div>
+                );
+              }
+              return null;
+            })}
           </div>
         ) : (
           <p className="text-center text-gray-500 text-lg">
-            Select a newsletter from the left.
+            Select a newsletter from the sidebar.
           </p>
         )}
       </div>
@@ -198,3 +223,7 @@ const NewsLetter = () => {
 };
 
 export default NewsLetter;
+
+
+
+
